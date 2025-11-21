@@ -3,11 +3,13 @@ import threading
 import hashlib
 import json
 import time
+from pathlib import Path
+
 
 
 class P2P:
 
-    def __init__(self, host='127.0.0.1', port=5000):
+    def __init__(self, host='127.0.0.1', port=5000, shared_dir='shared'):
         self.host = host
         self.port = port
         self.server_socket = None
@@ -15,6 +17,11 @@ class P2P:
         self.peers = {}
         self.peer_id = f"{host}:{port}"
         self.heartbeat_interval = 10
+
+        self.shared_dir = Path(shared_dir)
+        self.shared_dir.mkdir(exist_ok=True)
+        self.file_index = {}
+
 
     def start_server(self):
         try:
@@ -26,12 +33,15 @@ class P2P:
 
             print(f"[SERVER]    Started on {self.host}:{self.port}")
             print(f"[SERVER]    Waiting for connections")
+            print(f"[SERVER]    Shared directory: {self.shared_dir.absolute()}")
+
+            self.scan_shared_folder()
 
             accept_thread = threading.Thread(target=self.accept_connections)
             accept_thread.daemon = True
             accept_thread.start()
 
-            heartbeat_thread = threading.Thread(target=self.heartbeat_loop)
+            heartbeat_thread = threading.Thread(target=self.loop_heartbeat)
             heartbeat_thread.daemon = True
             heartbeat_thread.start()
 
@@ -40,6 +50,145 @@ class P2P:
             cleanup_thread.start()
         except Exception as e:
             print(f"[ERROR]     Failed to start server: {e}")
+
+    def calculate_file_hash(self, filepath):
+        sha256_hash = hashlib.sha256()
+
+        try:
+            with open(filepath, 'rb') as f:
+                for byte_block in iter(lambda: f.read(4096), b""):
+                    sha256_hash.update(byte_block)
+            return sha256_hash.hexdigest()
+        except Exception as e:
+            print(f"[ERROR]     Failed to hash {filepath}: {e}")
+            return None
+
+    def scan_shared_folder(self):
+        print(f"\n[INDEX]     Scanning shared folder: {self.shared_dir}")
+        self.file_index = {}
+        
+        if not self.shared_dir.exists():
+            print(f"[WARNING]   Shared directory does not exist, creating it.")
+            self.shared_dir.mkdir(exist_ok=True)
+            return
+        
+        file_count = 0
+        for file_path in self.shared_dir.rglob('*'):
+            if file_path.is_file():
+                filename = file_path.name
+                file_size = file_path.stat().st_size
+                
+                print(f"[INDEX]     Hashing: {filename}", end=' ')
+                file_hash = self.calculate_file_hash(file_path)
+                
+                if file_hash:
+                    self.file_index[filename] = {
+                        'path': str(file_path),
+                        'size': file_size,
+                        'hash': file_hash
+                    }
+                    size_mb = file_size / (1024 * 1024)
+                    print(f"✓ ({size_mb:.2f} MB)")
+                    file_count += 1
+                else:
+                    print("[ERROR]     Indexing Failed")
+        print(f"[INDEX]     Indexed {file_count} files\n")
+
+    def refresh_index(self):
+        print("[INDEX]     Refreshing file index.")
+        self.scan_shared_folder()
+
+    def get_file_list(self):
+        return list(self.file_index.keys())
+
+    def get_file_info(self, filename):
+        return self.file_index.get(filename)
+
+    def list_files(self):
+        print(f"\n{'='*50}")
+        print(f"SHARED FILES ({len(self.file_index)}):")
+
+        
+        if not self.file_index:
+            print("No files in shared folder.")
+            print(f"Add files to: {self.shared_dir.absolute()}")
+        else:
+            for i, (filename, metadata) in enumerate(self.file_index.items(), 1):
+                size_mb = metadata['size'] / (1024 * 1024)
+                file_hash = metadata['hash']
+                
+                print(f"\n{i}. {filename}")
+                print(f"   Size: {size_mb:.2f} MB ({metadata['size']} bytes)")
+                print(f"   Hash: {file_hash[:32]}...")
+                print(f"   Path: {metadata['path']}")
+        print(f"{'='*50}\n")
+
+    def request_peer_file_list(self, peer_host, peer_port):
+        try:
+            print(f"[CLIENT]    Requesting file list from {peer_host}:{peer_port}...")
+
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(5)
+            client_socket.connect((peer_host, peer_port))
+            request_msg = {
+                'type': 'GET_FILE_LIST',
+                'requester': self.peer_id
+            }
+            client_socket.send(json.dumps(request_msg).encode('utf-8'))
+
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode('utf-8'))
+                if response.get('type') == 'FILE_LIST':
+                    files = response.get('files', [])
+                    peer_id = response.get('peer_id')
+                    
+                    print(f"\n[FILE LIST] Files on {peer_id}:")
+                    print(f"{'='*50}")
+                    if not files:
+                        print("[ERROR]     No files available")
+                    else:
+                        for i, filename in enumerate(files, 1):
+                            print(f"  {i}. {filename}")
+                    
+                    return files
+            
+            client_socket.close()
+            
+        except Exception as e:
+            print(f"[ERROR]     Failed to get file list from {peer_host}:{peer_port}: {e}")
+            return []
+
+    def request_file_info(self, peer_host, peer_port, filename):
+        try:
+            print(f"[CLIENT]    Requesting info for '{filename}' from {peer_host}:{peer_port}")
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(5)
+            client_socket.connect((peer_host, peer_port))
+            request_msg = {
+                'type': 'GET_FILE_INFO',
+                'filename': filename,
+                'requester': self.peer_id
+            }
+            client_socket.send(json.dumps(request_msg).encode('utf-8'))
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode('utf-8'))
+                if response.get('type') == 'FILE_INFO':
+                    file_info = response.get('info')
+                    if file_info:
+                        print(f"\n[FILE INFO] {filename}")
+                        size_mb = file_info['size'] / (1024 * 1024)
+                        print(f"  Size: {size_mb:.2f} MB ({file_info['size']} bytes)")
+                        print(f"  Hash: {file_info['hash']}")
+                        print(f"{'='*70}\n")
+                        return file_info
+                    else:
+                        print(f"[INFO]      File '{filename}' not found on peer")
+            client_socket.close()
+        except Exception as e:
+            print(f"[ERROR]     Failed to get file info: {e}")
+            return None
 
     def accept_connections(self):
         while self.running:
@@ -140,6 +289,30 @@ class P2P:
             return {
                 'type': 'ACK',
                 'status': 'received'
+            }
+
+        elif msg_type == 'GET_FILE_LIST':
+            requester = message.get('requester')
+            print(f"[SERVER] File list request from {requester}")
+            
+            return {
+                'type': 'FILE_LIST',
+                'files': self.get_file_list(),
+                'peer_id': self.peer_id
+            }
+            
+        elif msg_type == 'GET_FILE_INFO':
+            filename = message.get('filename')
+            requester = message.get('requester')
+            print(f"[SERVER] File info request from {requester}: {filename}")
+            
+            file_info = self.get_file_info(filename)
+            
+            return {
+                'type': 'FILE_INFO',
+                'filename': filename,
+                'info': file_info,
+                'peer_id': self.peer_id
             }
 
         else:

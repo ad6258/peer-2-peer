@@ -3,6 +3,32 @@ import threading
 import json
 import time
 from p2p import P2P
+from pathlib import Path
+
+
+def create_demo_files(peer_num):
+    """
+    Create some demo files in the shared folder
+    """
+    shared_dir = Path(f'shared_{peer_num}')
+    shared_dir.mkdir(exist_ok=True)
+    
+    # Create different files for each peer
+    files = {
+        1: [('report.txt', 1024), ('document.pdf', 2048), ('video.mp4', 5120)],
+        2: [('presentation.ppt', 3072), ('music.mp3', 4096), ('data.csv', 512)]
+    }
+    
+    for filename, size in files.get(peer_num, []):
+        filepath = shared_dir / filename
+        with open(filepath, 'w') as f:
+            # Write content to reach approximate size
+            content = f"Demo file content from Peer {peer_num}: {filename}\n"
+            f.write(content * (size // len(content)))
+    
+    print(f"[SETUP] Created demo files for Peer {peer_num}")
+
+
 
 def test_server():
     node = P2P(host='127.0.0.1', port=5000)
@@ -67,33 +93,65 @@ def test_peer(port, connect_to_port=None):
 
 
 def main():
-    print("P2P PEER DISCOVERY TEST")
-    print("\nStarting 3 peers:")
-    print("Peer 1: Port 5000 (Bootstrap peer)")
-    print("Peer 2: Port 5001 (Connects to 5000)")
-    print("Peer 3: Port 5002 (Connects to 5001)")
+    """
+    Demo: File indexing and querying between peers
+    """
+    print("=" * 70)
+    print("P2P FILE INDEXING DEMO - STEP 4")
+    print("=" * 70)
+    print("\nSetup:")
+    print("  Peer 1 (Port 5000): report.txt, document.pdf, video.mp4")
+    print("  Peer 2 (Port 5001): presentation.ppt, music.mp3, data.csv")
+    print("\nStarting network...\n")
     
-    peer1_thread = threading.Thread(target=test_peer, args=[5000])
-    peer1_thread.daemon = True
-    peer1_thread.start()
+    # Create demo files
+    create_demo_files(1)
+    create_demo_files(2)
     
+    # Start Peer 1
+    peer1 = P2P('127.0.0.1', 5000, 'shared_1')
+    peer1.start_server()
+    time.sleep(1)
+    
+    # Start Peer 2
+    peer2 = P2P('127.0.0.1', 5001, 'shared_2')
+    peer2.start_server()
+    peer2.connect_to_peer('127.0.0.1', 5000)
     time.sleep(2)
     
-    peer2_thread = threading.Thread(target=test_peer, args=[5001, 5000])
-    peer2_thread.daemon = True
-    peer2_thread.start()
+    # Show local files on each peer
+    print("\nLOCAL FILE INDEXES")
+    peer1.list_files()
+    peer2.list_files()
     
-    time.sleep(2)
+    # Peer 1 requests file list from Peer 2
+    print("PEER 1 -> Requesting file list from PEER 2")
+    peer1.request_peer_file_list('127.0.0.1', 5001)
     
-    peer3_thread = threading.Thread(target=test_peer, args=[5002, 5001])
-    peer3_thread.daemon = True
-    peer3_thread.start()
+    time.sleep(1)
+    
+    # Peer 2 requests file info from Peer 1
+    print("\n" + "="*70)
+    print("PEER 2 → Requesting file info for 'video.mp4' from PEER 1")
+    print("="*70)
+    peer2.request_file_info('127.0.0.1', 5000, 'video.mp4')
+    
+    time.sleep(1)
+    
+    # Peer 1 requests non-existent file
+    print("\n" + "="*70)
+    print("PEER 1 → Requesting file info for 'nonexistent.txt' from PEER 2")
+    print("="*70)
+    peer2.request_file_info('127.0.0.1', 5001, 'nonexistent.txt')
+    
+    print("\n[INFO] Demo completed! Press Ctrl+C to exit")
     
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("[INFO]      Demo completed!")
+        peer1.stop_server()
+        peer2.stop_server()
 
 
 if __name__ == "__main__":
