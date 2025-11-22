@@ -9,7 +9,7 @@ from pathlib import Path
 
 class P2P:
 
-    def __init__(self, host='127.0.0.1', port=5000, shared_dir='shared'):
+    def __init__(self, host='127.0.0.1', port=5000, shared_dir='shared', downloads_dir='downloads'):
         self.host = host
         self.port = port
         self.server_socket = None
@@ -21,6 +21,16 @@ class P2P:
         self.shared_dir = Path(shared_dir)
         self.shared_dir.mkdir(exist_ok=True)
         self.file_index = {}
+
+        self.search_results = {}
+        self.search_timeout = 5
+        self.search_lock = threading.Lock()
+
+        self.chunk_size = 8192
+
+        self.downloads_dir = Path(downloads_dir)
+        self.downloads_dir.mkdir(exist_ok=True)
+
 
 
     def start_server(self):
@@ -34,6 +44,8 @@ class P2P:
             print(f"[SERVER]    Started on {self.host}:{self.port}")
             print(f"[SERVER]    Waiting for connections")
             print(f"[SERVER]    Shared directory: {self.shared_dir.absolute()}")
+            print(f"[SERVER] Downloads directory: {self.downloads_dir.absolute()}")
+
 
             self.scan_shared_folder()
 
@@ -51,9 +63,325 @@ class P2P:
         except Exception as e:
             print(f"[ERROR]     Failed to start server: {e}")
 
+    def download_file(self, peer_host, peer_port, filename):
+        print(f"\n{'='*50}")
+        print(f"[DOWNLOAD] Starting download: {filename} from {peer_host}:{peer_port}")        
+        try:
+            file_info = self.request_file_info_for_download(peer_host, peer_port, filename)
+            
+            if not file_info:
+                print(f"[ERROR]     Could not get file info from peer")
+                return False
+            
+            file_size = file_info['size']
+            file_hash = file_info['hash']
+            total_chunks = (file_size + self.chunk_size - 1) // self.chunk_size
+            
+            print(f"[DOWNLOAD]  File size: {file_size} bytes")
+            print(f"[DOWNLOAD]  Total chunks: {total_chunks}")
+            print(f"[DOWNLOAD]  Expected hash: {file_hash[:32]}")
+
+            download_path = self.downloads_dir / filename
+            downloaded_chunks = 0
+            
+            with open(download_path, 'wb') as f:
+                for chunk_index in range(total_chunks):
+                    chunk_data = self.request_chunk(peer_host, peer_port, filename, chunk_index)
+                    
+                    if chunk_data is None:
+                        print(f"\n[ERROR]     Failed to download chunk {chunk_index}")
+                        return False
+                    
+                    f.write(chunk_data)
+                    downloaded_chunks += 1
+                    
+                    progress = (downloaded_chunks / total_chunks) * 100
+                    print(f"\r[DOWNLOAD]  Progress: {downloaded_chunks}/{total_chunks} chunks ({progress:.1f}%)", end='', flush=True)
+            
+            print(f"[DOWNLOAD]  Download complete, saved to: {download_path}")
+            
+            downloaded_hash = self.calculate_file_hash(download_path)
+            
+            if downloaded_hash == file_hash:
+                print(f"[DOWNLOAD]  File integrity verified")
+                return True
+            else:
+                print(f"[ERROR]     File integrity check FAILED!")
+                print(f"[ERROR]     Expected: {file_hash[:32]}...")
+                print(f"[ERROR]     Got:      {downloaded_hash[:32]}...")
+                print(f"[ERROR]     Deleting corrupted file")
+                download_path.unlink()
+                return False
+            
+        except Exception as e:
+            print(f"[ERROR]     Download failed: {e}")
+            return False
+
+    def request_file_info_for_download(self, peer_host, peer_port, filename):
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(10)
+            client_socket.connect((peer_host, peer_port))
+
+            request_msg = {
+                'type': 'GET_FILE_INFO',
+                'filename': filename,
+                'requester': self.peer_id
+            }
+
+            client_socket.send(json.dumps(request_msg).encode('utf-8'))
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode('utf-8'))
+                if response.get('type') == 'FILE_INFO':
+                    return response.get('info')
+            
+            client_socket.close()
+            
+        except Exception as e:
+            print(f"[ERROR]      Failed to get file info: {e}")
+            return None
+
+    def request_chunk(self, peer_host, peer_port, filename, chunk_index):
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(10)
+            client_socket.connect((peer_host, peer_port))
+            
+            request_msg = {
+                'type': 'REQUEST_CHUNK',
+                'filename': filename,
+                'chunk_index': chunk_index,
+                'chunk_size': self.chunk_size,
+                'requester': self.peer_id
+            }
+            
+            client_socket.send(json.dumps(request_msg).encode('utf-8'))
+            
+            header_data = client_socket.recv(1024)
+            if not header_data:
+                return None
+            
+            header = json.loads(header_data.decode('utf-8'))
+            
+            if header.get('type') == 'CHUNK_DATA':
+                chunk_size = header.get('chunk_size')
+                
+                chunk_data = b''
+                remaining = chunk_size
+                
+                while remaining > 0:
+                    data = client_socket.recv(min(remaining, 8192))
+                    if not data:
+                        break
+                    chunk_data += data
+                    remaining -= len(data)
+                
+                client_socket.close()
+                return chunk_data
+            
+            client_socket.close()
+            return None
+            
+        except Exception as e:
+            return None
+
+    def send_chunk(self, client_socket, filename, chunk_index, chunk_size):
+        try:
+            file_info = self.get_file_info(filename)
+            
+            if not file_info:
+                error_msg = {
+                    'type': 'ERROR',
+                    'message': f'File not found: {filename}'
+                }
+                client_socket.send(json.dumps(error_msg).encode('utf-8'))
+                return
+            
+            filepath = file_info['path']
+            
+            offset = chunk_index * chunk_size
+            
+            with open(filepath, 'rb') as f:
+                f.seek(offset)
+                chunk_data = f.read(chunk_size)
+            
+            header = {
+                'type': 'CHUNK_DATA',
+                'filename': filename,
+                'chunk_index': chunk_index,
+                'chunk_size': len(chunk_data)
+            }
+            
+            client_socket.send(json.dumps(header).encode('utf-8'))
+            
+            time.sleep(0.01)
+            
+            client_socket.sendall(chunk_data)
+            
+        except Exception as e:
+            print(f"[ERROR]      Failed to send chunk: {e}")
+    
+
+    def search_local(self, query):
+        query_lower = query.lower()
+        results = []
+        
+        for filename, metadata in self.file_index.items():
+            if query_lower in filename.lower():
+                results.append({
+                    'filename': filename,
+                    'size': metadata['size'],
+                    'hash': metadata['hash'],
+                    'peer_id': self.peer_id,
+                    'peer_host': self.host,
+                    'peer_port': self.port
+                })
+        
+        return results
+
+    def search_network(self, query):
+        """
+        Search for files across all connected peers
+        Broadcasts search request and aggregates results
+        """
+        print(f"[SEARCH]    Searching for: '{query}'")
+        print(f"[SEARCH]    Querying {len(self.peers)} connected peers...")
+        
+        local_results = self.search_local(query)
+        print(f"[SEARCH]    Found {len(local_results)} local matches")
+        
+        search_id = f"{self.peer_id}_{time.time()}"
+        
+        with self.search_lock:
+            self.search_results[search_id] = {
+                'query': query,
+                'results': local_results.copy(),
+                'responses_received': 0,
+                'total_peers': len(self.peers)
+            }
+        
+        if self.peers:
+            search_threads = []
+            for peer_id, peer_info in list(self.peers.items()):
+                thread = threading.Thread(
+                    target=self.send_search_request,
+                    args=[peer_info['host'], peer_info['port'], query, search_id]
+                )
+                thread.daemon = True
+                thread.start()
+                search_threads.append(thread)
+            
+            start_time = time.time()
+            while time.time() - start_time < self.search_timeout:
+                with self.search_lock:
+                    if search_id in self.search_results:
+                        if self.search_results[search_id]['responses_received'] >= len(self.peers):
+                            break
+                time.sleep(0.1)
+        
+        with self.search_lock:
+            if search_id in self.search_results:
+                results = self.aggregate_search_results(search_id)
+                del self.search_results[search_id]
+            else:
+                results = []
+        
+        print(f"[SEARCH]    Search complete. Found {len(results)} unique files")
+        return results
+
+    def send_search_request(self, peer_host, peer_port, query, search_id):
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(self.search_timeout)
+            client_socket.connect((peer_host, peer_port))
+            
+            search_msg = {
+                'type': 'SEARCH_REQUEST',
+                'query': query,
+                'requester': self.peer_id,
+                'search_id': search_id
+            }
+            
+            client_socket.send(json.dumps(search_msg).encode('utf-8'))
+            
+            # Wait for response
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode('utf-8'))
+                if response.get('type') == 'SEARCH_RESPONSE':
+                    results = response.get('results', [])
+                    
+                    with self.search_lock:
+                        if search_id in self.search_results:
+                            self.search_results[search_id]['results'].extend(results)
+                            self.search_results[search_id]['responses_received'] += 1
+                    
+                    print(f"[SEARCH]    Received {len(results)} results from {peer_host}:{peer_port}")
+            
+            client_socket.close()
+            
+        except Exception as e:
+            with self.search_lock:
+                if search_id in self.search_results:
+                    self.search_results[search_id]['responses_received'] += 1
+
+    def aggregate_search_results(self, search_id):
+        if search_id not in self.search_results:
+            return []
+        
+        all_results = self.search_results[search_id]['results']
+        
+        aggregated = {}
+        for result in all_results:
+            filename = result['filename']
+            if filename not in aggregated:
+                aggregated[filename] = {
+                    'filename': filename,
+                    'size': result['size'],
+                    'hash': result['hash'],
+                    'peers': []
+                }
+            peer_info = {
+                'peer_id': result['peer_id'],
+                'host': result.get('peer_host'),
+                'port': result.get('peer_port')
+            }
+            if peer_info not in aggregated[filename]['peers']:
+                aggregated[filename]['peers'].append(peer_info)
+        return list(aggregated.values())
+
+    def display_search_results(self, results):
+        """
+        Pretty print search results
+        """
+        print(f"\n{'='*50}")
+        print(f"SEARCH RESULTS ({len(results)} files found)")
+        
+        if not results:
+            print("No files found matching your query.")
+        else:
+            for i, result in enumerate(results, 1):
+                filename = result['filename']
+                size_mb = result['size'] / (1024 * 1024)
+                peers = result['peers']
+                
+                print(f"\n{i}. {filename}")
+                print(f"   Size: {size_mb:.2f} MB ({result['size']} bytes)")
+                print(f"   Hash: {result['hash'][:32]}...")
+                print(f"   Available on {len(peers)} peer(s):")
+                
+                for peer in peers:
+                    peer_id = peer['peer_id']
+                    host = peer.get('host', 'unknown')
+                    port = peer.get('port', 'unknown')
+                    print(f"      - {peer_id} ({host}:{port})")
+        
+        print(f"{'='*50}\n")
+
+
     def calculate_file_hash(self, filepath):
         sha256_hash = hashlib.sha256()
-
         try:
             with open(filepath, 'rb') as f:
                 for byte_block in iter(lambda: f.read(4096), b""):
@@ -210,27 +538,31 @@ class P2P:
     def handle_client(self, client_socket, address):
         try:
             while self.running:
-                data = client_socket.recv(4096)
-            
+                data = client_socket.recv(8192)
+                
                 if not data:
-                    print(f"[SERVER]    Connection closed by {address}")
                     break
-
+                    
                 message = json.loads(data.decode('utf-8'))
-                print(f"[SERVER]    Received from {address}: {message}")
-
-                response = self.process_message(message, address)
-
-                if response:
-                    client_socket.send(json.dumps(response).encode('utf-8'))
-
-        except json.JSONDecodeError:
-            print(f"[ERROR]    Invalid JSON from {address}")
+                
+                if message.get('type') == 'REQUEST_CHUNK':
+                    filename = message.get('filename')
+                    chunk_index = message.get('chunk_index')
+                    chunk_size = message.get('chunk_size')
+                    requester = message.get('requester')
+                    
+                    print(f"[SERVER]    Chunk request from {requester}: {filename} chunk {chunk_index}")
+                    self.send_chunk(client_socket, filename, chunk_index, chunk_size)
+                    break
+                else:
+                    response = self.process_message(message, address)
+                    if response:
+                        client_socket.send(json.dumps(response).encode('utf-8'))
+                    
         except Exception as e:
-            print(f"[ERROR]    Error handling client {address}: {e}")
+            print(f"[ERROR]     Error handling client {address}: {e}")
         finally:
             client_socket.close()
-            print(f"[SERVER]    Closed connection with {address}")
 
     def process_message(self, message, address):
         msg_type = message.get('type')
@@ -291,6 +623,21 @@ class P2P:
                 'status': 'received'
             }
 
+        elif msg_type == 'SEARCH_REQUEST':
+            query = message.get('query')
+            requester = message.get('requester')
+            
+            print(f"[SERVER]    Search request from {requester}: '{query}'")
+            
+            results = self.search_local(query)
+            
+            return {
+                'type': 'SEARCH_RESPONSE',
+                'query': query,
+                'results': results,
+                'peer_id': self.peer_id
+            }
+
         elif msg_type == 'GET_FILE_LIST':
             requester = message.get('requester')
             print(f"[SERVER] File list request from {requester}")
@@ -304,7 +651,7 @@ class P2P:
         elif msg_type == 'GET_FILE_INFO':
             filename = message.get('filename')
             requester = message.get('requester')
-            print(f"[SERVER] File info request from {requester}: {filename}")
+            print(f"[SERVER]    File info request from {requester}: {filename}")
             
             file_info = self.get_file_info(filename)
             
@@ -314,6 +661,20 @@ class P2P:
                 'info': file_info,
                 'peer_id': self.peer_id
             }
+
+        # elif msg_type == 'REQUEST_CHUNK':
+        #     filename = message.get('filename')
+        #     chunk_index = message.get('chunk_index')
+        #     chunk_size = message.get('chunk_size')
+        #     requester = message.get('requester')
+            
+        #     print(f"[SERVER] Chunk request from {requester}: {filename} chunk {chunk_index}")
+            
+        #     # Send chunk directly (not as JSON response)
+        #     if client_socket:
+        #         self.send_chunk(client_socket, filename, chunk_index, chunk_size)
+            
+        #     return None
 
         else:
             print(f"[SERVER]    Unknown message type: {msg_type}")
@@ -372,7 +733,7 @@ class P2P:
             return True
 
         except Exception as e:
-            print(f"[ERROR]    Failed to connect to {peer_host}:{peer_port}: {e}")
+            print(f"[ERROR]     Failed to connect to {peer_host}:{peer_port}: {e}")
             return None
 
     def announce_to_peers(self):
