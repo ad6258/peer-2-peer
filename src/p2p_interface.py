@@ -1,4 +1,5 @@
 from p2p import P2P
+import time
 
 class UserInterface():
     def __init__(self, node):
@@ -25,7 +26,7 @@ class UserInterface():
                     self.node.list_peers()
                     
                 elif choice == '2':
-                    self.node.list_my_files()
+                    self.node.list_files()
                     
                 elif choice == '3':
                     self.search_files()
@@ -187,9 +188,9 @@ class UserInterface():
                 success = self.node.download_file(peer['host'], peer['port'], filename)
                 
                 if success:
-                    print(f"\n✓ Successfully downloaded: {filename}")
+                    print(f"\nSuccessfully downloaded: {filename}")
                 else:
-                    print(f"\n✗ Failed to download: {filename}")
+                    print(f"\nFailed to download: {filename}")
                     
             except ValueError:
                 print("✗ Please enter a valid number")
@@ -212,7 +213,12 @@ def main():
     
     # Create and start node
     node = P2P('127.0.0.1', port)
+    node.start_server()
     time.sleep(1)
 
     ui = UserInterface(node)
     ui.run()
+
+
+if __name__ == "__main__":
+    main()

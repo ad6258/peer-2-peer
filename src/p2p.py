@@ -18,7 +18,7 @@ class P2P:
         self.peer_id = f"{host}:{port}"
         self.heartbeat_interval = 10
 
-        self.shared_dir = Path(shared_dir)
+        self.shared_dir = Path(shared_dir+str(port))
         self.shared_dir.mkdir(exist_ok=True)
         self.file_index = {}
 
@@ -28,7 +28,7 @@ class P2P:
 
         self.chunk_size = 8192
 
-        self.downloads_dir = Path(downloads_dir)
+        self.downloads_dir = Path(downloads_dir+str(port))
         self.downloads_dir.mkdir(exist_ok=True)
 
 
@@ -44,7 +44,7 @@ class P2P:
             print(f"[SERVER]    Started on {self.host}:{self.port}")
             print(f"[SERVER]    Waiting for connections")
             print(f"[SERVER]    Shared directory: {self.shared_dir.absolute()}")
-            print(f"[SERVER] Downloads directory: {self.downloads_dir.absolute()}")
+            print(f"[SERVER]    Downloads directory: {self.downloads_dir.absolute()}")
 
 
             self.scan_shared_folder()
@@ -416,7 +416,7 @@ class P2P:
                         'hash': file_hash
                     }
                     size_mb = file_size / (1024 * 1024)
-                    print(f"✓ ({size_mb:.2f} MB)")
+                    print(f"({size_mb:.2f} MB)")
                     file_count += 1
                 else:
                     print("[ERROR]     Indexing Failed")
@@ -522,7 +522,7 @@ class P2P:
         while self.running:
             try:
                 client_socket, address = self.server_socket.accept()
-                print(f"[SERVER]    New connection from {address}")
+                # print(f"[SERVER]    New connection from {address}")
 
                 client_thread = threading.Thread(
                                     target=self.handle_client,
@@ -583,7 +583,7 @@ class P2P:
 
         elif msg_type == 'HEARTBEAT':
             peer_id = message.get('peer_id')
-            print(f"[SERVER]    Received HEARTBEAT from {address}, {peer_id}")
+            # print(f"[SERVER]    Received HEARTBEAT from {address}, {peer_id}")
             if peer_id in self.peers:
                 self.peers[peer_id]['last_seen'] = time.time()
             return {
