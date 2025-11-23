@@ -8,8 +8,43 @@ from pathlib import Path
 
 
 class P2P:
+    """
+    Peer-to-Peer File Sharing Node
+    
+    A complete P2P node that can discover peers, share files, search the network,
+    and transfer files in chunks with integrity verification.
+    
+    Attributes:
+        host (str): IP address this node listens on
+        port (int): Port number this node listens on
+        server_socket (socket): Server socket for accepting connections
+        running (bool): Server running state
+        peers (dict): Dictionary of connected peers {peer_id: peer_info}
+        peer_id (str): Unique identifier for this peer (host:port)
+        heartbeat_interval (int): Seconds between heartbeat checks
+        shared_dir (Path): Directory containing files to share
+        file_index (dict): Index of shared files {filename: metadata}
+        search_results (dict): Temporary storage for search operations
+        search_timeout (int): Timeout for search operations in seconds
+        search_lock (threading.Lock): Thread-safe lock for search operations
+        chunk_size (int): Size of file chunks in bytes (8KB)
+        downloads_dir (Path): Directory where downloaded files are saved
+    """
 
     def __init__(self, host='127.0.0.1', port=5000, shared_dir='shared', downloads_dir='downloads'):
+        """
+        Initialize a P2P node
+        
+        Args:
+            host (str): IP address to bind to. Default: '127.0.0.1'
+            port (int): Port number to listen on. Default: 5000
+            shared_dir (str): Directory name for shared files. Default: 'shared'
+            downloads_dir (str): Directory name for downloads. Default: 'downloads'
+        
+        Note:
+            Port number is appended to directory names to allow multiple nodes
+            on the same machine (e.g., 'shared5000', 'downloads5001')
+        """
         self.host = host
         self.port = port
         self.server_socket = None
@@ -18,22 +53,37 @@ class P2P:
         self.peer_id = f"{host}:{port}"
         self.heartbeat_interval = 10
 
+        # File indexing
         self.shared_dir = Path(shared_dir+str(port))
         self.shared_dir.mkdir(exist_ok=True)
         self.file_index = {}
 
+        # Search
         self.search_results = {}
         self.search_timeout = 5
         self.search_lock = threading.Lock()
 
+        # File transfer
         self.chunk_size = 8192
 
+        # Downloads
         self.downloads_dir = Path(downloads_dir+str(port))
         self.downloads_dir.mkdir(exist_ok=True)
 
 
 
     def start_server(self):
+        """
+        Start the P2P server
+        
+        Initializes the server socket, binds to host:port, and starts three
+        background threads:
+        - accept_connections: Accepts incoming peer connections
+        - loop_heartbeat: Sends periodic heartbeat to all peers
+        - cleanup_dead_peers: Removes unresponsive peers
+        
+        Also scans the shared folder to index available files.
+        """
         try:
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -49,6 +99,7 @@ class P2P:
 
             self.scan_shared_folder()
 
+            # Start background threads
             accept_thread = threading.Thread(target=self.accept_connections)
             accept_thread.daemon = True
             accept_thread.start()
@@ -64,7 +115,20 @@ class P2P:
             print(f"[ERROR]     Failed to start server: {e}")
 
     def download_file(self, peer_host, peer_port, filename):
-        print(f"\n{'='*50}")
+        """
+        Download a file from a peer using chunked transfer
+        
+        Downloads the file in chunks, displays progress, and verifies integrity
+        using SHA256 hash comparison.
+        
+        Args:
+            peer_host (str): IP address of the peer to download from
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file to download
+        
+        Returns:
+            bool: True if download successful and integrity verified, False otherwise
+        """
         print(f"[DOWNLOAD] Starting download: {filename} from {peer_host}:{peer_port}")        
         try:
             file_info = self.request_file_info_for_download(peer_host, peer_port, filename)
@@ -118,6 +182,17 @@ class P2P:
             return False
 
     def request_file_info_for_download(self, peer_host, peer_port, filename):
+        """
+        Request file metadata from a peer before downloading
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file to query
+        
+        Returns:
+            dict: File metadata {'path': str, 'size': int, 'hash': str} or None if failed
+        """
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.settimeout(10)
@@ -143,6 +218,23 @@ class P2P:
             return None
 
     def request_chunk(self, peer_host, peer_port, filename, chunk_index):
+        """
+        Request a specific chunk of a file from a peer
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file
+            chunk_index (int): Index of the chunk to download (0-based)
+        
+        Returns:
+            bytes: Chunk data or None if failed
+        
+        Protocol:
+            1. Send REQUEST_CHUNK message with JSON header
+            2. Receive CHUNK_DATA header with chunk size
+            3. Receive raw binary chunk data
+        """
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.settimeout(10)
@@ -187,6 +279,16 @@ class P2P:
             return None
 
     def send_chunk(self, client_socket, filename, chunk_index, chunk_size):
+        """
+        Send a specific chunk of a file to a requesting peer.
+        If file not found, sends error message instead
+        
+        Args:
+            client_socket (socket): Connected socket to send chunk through
+            filename (str): Name of the file to send chunk from
+            chunk_index (int): Index of the chunk to send (0-based)
+            chunk_size (int): Size of chunk to read in bytes
+        """
         try:
             file_info = self.get_file_info(filename)
             
@@ -199,13 +301,16 @@ class P2P:
                 return
             
             filepath = file_info['path']
-            
+
+            # Calculate byte offset for this chunk
             offset = chunk_index * chunk_size
             
+            # Read chunk from file
             with open(filepath, 'rb') as f:
                 f.seek(offset)
                 chunk_data = f.read(chunk_size)
             
+            # Send chunk header
             header = {
                 'type': 'CHUNK_DATA',
                 'filename': filename,
@@ -215,8 +320,10 @@ class P2P:
             
             client_socket.send(json.dumps(header).encode('utf-8'))
             
+            # Small delay to ensure header is received first
             time.sleep(0.01)
             
+            # Send chunk data
             client_socket.sendall(chunk_data)
             
         except Exception as e:
@@ -224,6 +331,17 @@ class P2P:
     
 
     def search_local(self, query):
+        """
+        Search for files in the local file index
+        
+        Args:
+            query (str): Search term (case-insensitive, partial match)
+        
+        Returns:
+            list: List of matching files with metadata:
+                  [{'filename': str, 'size': int, 'hash': str, 
+                    'peer_id': str, 'peer_host': str, 'peer_port': int}]
+        """
         query_lower = query.lower()
         results = []
         
@@ -242,17 +360,29 @@ class P2P:
 
     def search_network(self, query):
         """
-        Search for files across all connected peers
-        Broadcasts search request and aggregates results
+        Search for files across all connected peers.
+        Broadcasts search request and aggregates results.
+        Results from multiple peers are grouped by filename.
+        
+        Args:
+            query (str): Search term (case-insensitive, partial match)
+        
+        Returns:
+            list: Aggregated search results:
+                  [{'filename': str, 'size': int, 'hash': str,
+                    'peers': [{'peer_id': str, 'host': str, 'port': int}]}]
         """
         print(f"[SEARCH]    Searching for: '{query}'")
         print(f"[SEARCH]    Querying {len(self.peers)} connected peers...")
         
+        # Search locally first
         local_results = self.search_local(query)
         print(f"[SEARCH]    Found {len(local_results)} local matches")
         
+        # Generate unique search ID
         search_id = f"{self.peer_id}_{time.time()}"
         
+        # Initialize search results storage
         with self.search_lock:
             self.search_results[search_id] = {
                 'query': query,
@@ -261,6 +391,7 @@ class P2P:
                 'total_peers': len(self.peers)
             }
         
+        # Broadcast search to all peers in parallel
         if self.peers:
             search_threads = []
             for peer_id, peer_info in list(self.peers.items()):
@@ -272,6 +403,7 @@ class P2P:
                 thread.start()
                 search_threads.append(thread)
             
+            # Wait for responses with timeout
             start_time = time.time()
             while time.time() - start_time < self.search_timeout:
                 with self.search_lock:
@@ -280,6 +412,7 @@ class P2P:
                             break
                 time.sleep(0.1)
         
+        # Get aggregated results and cleanup
         with self.search_lock:
             if search_id in self.search_results:
                 results = self.aggregate_search_results(search_id)
@@ -291,6 +424,18 @@ class P2P:
         return results
 
     def send_search_request(self, peer_host, peer_port, query, search_id):
+        """
+        Send a search request to a specific peer
+        Updates self.search_results[search_id] with peer's results
+        Increments responses_received counter
+        This method is called in a separate thread for each peer
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            query (str): Search term
+            search_id (str): Unique ID for this search operation
+        """
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.settimeout(self.search_timeout)
@@ -312,6 +457,7 @@ class P2P:
                 if response.get('type') == 'SEARCH_RESPONSE':
                     results = response.get('results', [])
                     
+                    # Add results to search cache
                     with self.search_lock:
                         if search_id in self.search_results:
                             self.search_results[search_id]['results'].extend(results)
@@ -327,11 +473,25 @@ class P2P:
                     self.search_results[search_id]['responses_received'] += 1
 
     def aggregate_search_results(self, search_id):
+        """
+        Aggregate search results from multiple peers.
+        Groups results by filename and collects all peers that have each file.
+        Removes duplicate peer entries for the same file.
+
+        Args:
+            search_id (str): Unique ID for the search operation
+        
+        Returns:
+            list: Aggregated results grouped by filename:
+                  [{'filename': str, 'size': int, 'hash': str,
+                    'peers': [{'peer_id': str, 'host': str, 'port': int}]}]
+        """
         if search_id not in self.search_results:
             return []
         
         all_results = self.search_results[search_id]['results']
         
+        # Group by filename
         aggregated = {}
         for result in all_results:
             filename = result['filename']
@@ -347,6 +507,7 @@ class P2P:
                 'host': result.get('peer_host'),
                 'port': result.get('peer_port')
             }
+            # Avoid duplicates
             if peer_info not in aggregated[filename]['peers']:
                 aggregated[filename]['peers'].append(peer_info)
         return list(aggregated.values())
@@ -354,6 +515,10 @@ class P2P:
     def display_search_results(self, results):
         """
         Pretty print search results
+
+        Args:
+            results (list): Search results from search_network() or aggregate_search_results()
+    
         """
         print(f"\n{'='*50}")
         print(f"SEARCH RESULTS ({len(results)} files found)")
@@ -381,6 +546,18 @@ class P2P:
 
 
     def calculate_file_hash(self, filepath):
+        """
+        Calculate SHA256 hash of a file
+        Reads file in chunks to handle large files efficiently without
+        loading entire file into memory.
+        Chunk Size: 4096 bytes for hashing
+        
+        Args:
+            filepath (str or Path): Path to the file
+        
+        Returns:
+            str: Hex string of SHA256 hash or None if error
+        """
         sha256_hash = hashlib.sha256()
         try:
             with open(filepath, 'rb') as f:
@@ -392,6 +569,18 @@ class P2P:
             return None
 
     def scan_shared_folder(self):
+        """
+        Scan the shared folder and index all files
+        
+        Creates file_index dictionary with metadata for each file:
+        - filename (key)
+        - path: absolute path to file
+        - size: file size in bytes
+        - hash: SHA256 hash for integrity verification
+        
+        Updates self.file_index with current state of shared folder
+        Prints indexing progress to console
+        """
         print(f"\n[INDEX]     Scanning shared folder: {self.shared_dir}")
         self.file_index = {}
         
@@ -423,16 +612,20 @@ class P2P:
         print(f"[INDEX]     Indexed {file_count} files\n")
 
     def refresh_index(self):
+        """Refresh the file index by rescanning the shared folder"""
         print("[INDEX]     Refreshing file index.")
         self.scan_shared_folder()
 
     def get_file_list(self):
+        """Get list of all available filenames"""
         return list(self.file_index.keys())
 
     def get_file_info(self, filename):
+        """Get metadata for a specific file"""
         return self.file_index.get(filename)
 
     def list_files(self):
+        """Display all shared files with detailed information"""
         print(f"\n{'='*50}")
         print(f"SHARED FILES ({len(self.file_index)}):")
 
@@ -452,6 +645,17 @@ class P2P:
         print(f"{'='*50}\n")
 
     def request_peer_file_list(self, peer_host, peer_port):
+        """
+        Request list of all files from a specific peer.
+        Prints formatted list of files to console.
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+        
+        Returns:
+            list: List of filenames available on the peer or empty list if failed
+        """
         try:
             print(f"[CLIENT]    Requesting file list from {peer_host}:{peer_port}...")
 
@@ -488,6 +692,18 @@ class P2P:
             return []
 
     def request_file_info(self, peer_host, peer_port, filename):
+        """
+        Request detailed metadata for a specific file from a peer
+        Prints file information to console
+
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file to query
+        
+        Returns:
+            dict: File metadata {'path': str, 'size': int, 'hash': str} or None if not found
+        """
         try:
             print(f"[CLIENT]    Requesting info for '{filename}' from {peer_host}:{peer_port}")
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -519,6 +735,14 @@ class P2P:
             return None
 
     def accept_connections(self):
+        """
+        Accept incoming peer connections (runs in background thread)
+        
+        Continuously accepts new connections and spawns a new thread
+        to handle each client using handle_client().
+        
+        Runs while self.running is True
+        """
         while self.running:
             try:
                 client_socket, address = self.server_socket.accept()
@@ -536,6 +760,18 @@ class P2P:
                     print(f"[ERROR]    Error accepting connection: {e}")
 
     def handle_client(self, client_socket, address):
+        """
+        Handle communication with a connected peer.
+        Runs until client disconnects or error occurs
+        
+        Args:
+            client_socket (socket): Connected socket for this peer
+            address (tuple): (host, port) of the connected peer
+        
+        Special Handling:
+            - REQUEST_CHUNK messages are handled directly and close connection after sending
+            - All other messages are passed to process_message() for handling
+        """
         try:
             while self.running:
                 data = client_socket.recv(8192)
@@ -545,6 +781,7 @@ class P2P:
                     
                 message = json.loads(data.decode('utf-8'))
                 
+                # Special handling for chunk requests
                 if message.get('type') == 'REQUEST_CHUNK':
                     filename = message.get('filename')
                     chunk_index = message.get('chunk_index')
@@ -565,6 +802,26 @@ class P2P:
             client_socket.close()
 
     def process_message(self, message, address):
+        """
+        Process incoming messages and generate appropriate responses
+        
+        Args:
+            message (dict): JSON message received from peer
+            address (tuple): (host, port) of the sender
+        
+        Returns:
+            dict: JSON response message or None
+        
+        Supported Message Types:
+            - PEER_DISCOVERY: Peer announces itself, returns peer list
+            - HEARTBEAT: Health check, returns acknowledgment
+            - GET_PEERS: Request peer list
+            - MESSAGE: Generic message with content
+            - SEARCH_REQUEST: Search for files
+            - GET_FILE_LIST: Request list of shared files
+            - GET_FILE_INFO: Request metadata for specific file
+            - REQUEST_CHUNK is handled separately in handle_client()
+        """
         msg_type = message.get('type')
 
         if msg_type == 'PEER_DISCOVERY':
@@ -597,22 +854,6 @@ class P2P:
             return {
                 'type': 'PEER_LIST',
                 'peers': list(self.peers.values())
-            }
-
-        elif msg_type == "HELLO":
-            print(f"[SERVER]    Received HELLO from {address}")
-            return {
-                'type': 'HELLO_RESP',
-                'status': 'success',
-                'message': f'Hello from {self.host}:{self.port}'
-            }
-
-        elif msg_type == "PING":
-            print(f"[SERVER]    Received PING from {address}")
-            return {
-                'type': 'PONG',
-                'status': 'success',
-                'timestamp': time.time()
             }
 
         elif msg_type == 'MESSAGE':
@@ -662,20 +903,6 @@ class P2P:
                 'peer_id': self.peer_id
             }
 
-        # elif msg_type == 'REQUEST_CHUNK':
-        #     filename = message.get('filename')
-        #     chunk_index = message.get('chunk_index')
-        #     chunk_size = message.get('chunk_size')
-        #     requester = message.get('requester')
-            
-        #     print(f"[SERVER] Chunk request from {requester}: {filename} chunk {chunk_index}")
-            
-        #     # Send chunk directly (not as JSON response)
-        #     if client_socket:
-        #         self.send_chunk(client_socket, filename, chunk_index, chunk_size)
-            
-        #     return None
-
         else:
             print(f"[SERVER]    Unknown message type: {msg_type}")
             return {
@@ -685,6 +912,17 @@ class P2P:
             }
 
     def add_peer(self, peer_info):
+        """
+        Add a peer to the known peers list.
+        Updates self.peers dictionary with peer information and current timestamp.
+        Won't add itself to peer list.
+        
+        Args:
+            peer_info (dict): Peer information containing:
+                - peer_id: Unique identifier (host:port)
+                - host: IP address
+                - port: Port number
+        """
         peer_id = peer_info.get('peer_id')
         if peer_id and peer_id != self.peer_id:
             self.peers[peer_id] = {
@@ -697,6 +935,16 @@ class P2P:
 
 
     def connect_to_peer(self, peer_host, peer_port):
+        """
+        Connect to another peer and perform peer discovery
+        
+        Args:
+            peer_host (str): IP address of peer to connect to
+            peer_port (int): Port number of peer
+        
+        Returns:
+            bool: True if connection successful, None if failed
+        """
         try:
             print(f"[CLIENT]    Connecting to {peer_host}:{peer_port}")
 
@@ -706,6 +954,7 @@ class P2P:
 
             print(f"[CLIENT]    Connected to {peer_host}:{peer_port}")
 
+            # Send discovery message
             discovery_msg = {
                 'type': 'PEER_DISCOVERY',
                 'peer_info': {
@@ -717,12 +966,15 @@ class P2P:
             
             client_socket.send(json.dumps(discovery_msg).encode('utf-8'))
 
+            # Receive response with peer list
             response_data = client_socket.recv(4096)
             if response_data:
                 response = json.loads(response_data.decode('utf-8'))
                 
+                # Add the peer we connected to
                 self.add_peer(response.get('peer_info'))
                 
+                # Add all peers known by the remote peer
                 known_peers = response.get('known_peers', [])
                 for peer in known_peers:
                     self.add_peer(peer)
@@ -737,6 +989,14 @@ class P2P:
             return None
 
     def announce_to_peers(self):
+        """
+        Announce presence to all known peers
+        
+        Attempts to connect to each known peer, triggering peer discovery.
+        Used to refresh connections or announce rejoining the network.
+        
+        Silently ignores connection failures to individual peers
+        """
         for peer_id, peer_info in list(self.peers.items()):
             try:
                 self.connect_to_peer(peer_info['host'], peer_info['port'])
@@ -744,6 +1004,9 @@ class P2P:
                 pass
     
     def loop_heartbeat(self):
+        """
+        Continuously send heartbeat to all peers (runs in background thread)
+        """
         while self.running:
             time.sleep(self.heartbeat_interval)
             for peer_id, peer_info in list(self.peers.items()):
@@ -753,6 +1016,14 @@ class P2P:
                     pass
 
     def send_heartbeat(self, peer_host, peer_port):
+        """
+        Send heartbeat message to a specific peer
+        Silently fails if connection cannot be established
+        
+        Args:
+            peer_host (str): IP address of peer
+            peer_port (int): Port number of peer
+        """
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.settimeout(3)
@@ -765,6 +1036,7 @@ class P2P:
             }
             client_socket.send(json.dumps(heartbeat_msg).encode('utf-8'))
 
+            # Wait for acknowledgment
             response_data = client_socket.recv(4096)
             if response_data:
                 response = json.loads(response_data.decode('utf-8'))
@@ -776,25 +1048,42 @@ class P2P:
             client_socket.close()
         
         except:
-            pass
+            pass  # Silently fail on heartbeat errors
 
     def cleanup_dead_peers(self):
+        """
+        Remove unresponsive peers from peer list (runs in background thread)
+        
+        Checks every 15 seconds for peers that haven't responded to heartbeat
+        in more than 30 seconds and removes them from the peer list.
+        
+        Timeout: 30 seconds without heartbeat response
+        Check Interval: 15 seconds
+        Runs while self.running is True
+        
+        Removes dead peers from self.peers dictionary
+        Prints cleanup messages to console
+        """
         timeout = 30
 
         while self.running:
             time.sleep(15)
             current_time = time.time()
             dead_peers = []
+
+            # Find peers that haven't been seen recently
             for peer_id, peer_info in self.peers.items():
                 last_seen = peer_info.get('last_seen', 0)
                 if current_time - last_seen > timeout:
                     dead_peers.append(peer_id)
 
+            # Remove dead peers
             for peer_id in dead_peers:
                 print(f"[CLEANUP]   Removing dead peer: {peer_id}")
                 del self.peers[peer_id]
 
     def list_peers(self):
+        """Display list of all connected peers"""
         print(f"[INFO]      Known Peers ({len(self.peers)}):")
         if not self.peers:
             print("[INFO]      No peers connected yet.")
@@ -805,6 +1094,18 @@ class P2P:
                 print(f"  • {peer_id} (last seen {time_ago}s ago)")
 
     def send_message(self, peer_socket, message):
+        """
+        Send a generic JSON message to a peer and wait for response
+        This is a utility method for simple request-response patterns
+
+        Args:
+            peer_socket (socket): Connected socket to send message through
+            message (dict): Message dictionary to send (will be JSON encoded)
+        
+        Returns:
+            dict: Response message or None if failed
+        
+        """
         try:
             message_json = json.dumps(message)
             peer_socket.send(message_json.encode('utf-8'))
@@ -828,7 +1129,3 @@ class P2P:
         self.running = False
         if self.server_socket:
             self.server_socket.close()
-
-
-
-
