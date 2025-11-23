@@ -1,0 +1,2908 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>p2p API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>p2p</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="p2p.P2P"><code class="flex name class">
+<span>class <span class="ident">P2P</span></span>
+<span>(</span><span>host='127.0.0.1', port=5000, shared_dir='shared', downloads_dir='downloads')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class P2P:
+    &#34;&#34;&#34;
+    Peer-to-Peer File Sharing Node
+    
+    A complete P2P node that can discover peers, share files, search the network,
+    and transfer files in chunks with integrity verification.
+    
+    Attributes:
+        host (str): IP address this node listens on
+        port (int): Port number this node listens on
+        server_socket (socket): Server socket for accepting connections
+        running (bool): Server running state
+        peers (dict): Dictionary of connected peers {peer_id: peer_info}
+        peer_id (str): Unique identifier for this peer (host:port)
+        heartbeat_interval (int): Seconds between heartbeat checks
+        shared_dir (Path): Directory containing files to share
+        file_index (dict): Index of shared files {filename: metadata}
+        search_results (dict): Temporary storage for search operations
+        search_timeout (int): Timeout for search operations in seconds
+        search_lock (threading.Lock): Thread-safe lock for search operations
+        chunk_size (int): Size of file chunks in bytes (8KB)
+        downloads_dir (Path): Directory where downloaded files are saved
+    &#34;&#34;&#34;
+
+    def __init__(self, host=&#39;127.0.0.1&#39;, port=5000, shared_dir=&#39;shared&#39;, downloads_dir=&#39;downloads&#39;):
+        &#34;&#34;&#34;
+        Initialize a P2P node
+        
+        Args:
+            host (str): IP address to bind to. Default: &#39;127.0.0.1&#39;
+            port (int): Port number to listen on. Default: 5000
+            shared_dir (str): Directory name for shared files. Default: &#39;shared&#39;
+            downloads_dir (str): Directory name for downloads. Default: &#39;downloads&#39;
+        
+        Note:
+            Port number is appended to directory names to allow multiple nodes
+            on the same machine (e.g., &#39;shared5000&#39;, &#39;downloads5001&#39;)
+        &#34;&#34;&#34;
+        self.host = host
+        self.port = port
+        self.server_socket = None
+        self.running = False
+        self.peers = {}
+        self.peer_id = f&#34;{host}:{port}&#34;
+        self.heartbeat_interval = 10
+
+        # File indexing
+        self.shared_dir = Path(shared_dir+str(port))
+        self.shared_dir.mkdir(exist_ok=True)
+        self.file_index = {}
+
+        # Search
+        self.search_results = {}
+        self.search_timeout = 5
+        self.search_lock = threading.Lock()
+
+        # File transfer
+        self.chunk_size = 8192
+
+        # Downloads
+        self.downloads_dir = Path(downloads_dir+str(port))
+        self.downloads_dir.mkdir(exist_ok=True)
+
+
+
+    def start_server(self):
+        &#34;&#34;&#34;
+        Start the P2P server
+        
+        Initializes the server socket, binds to host:port, and starts three
+        background threads:
+        - accept_connections: Accepts incoming peer connections
+        - loop_heartbeat: Sends periodic heartbeat to all peers
+        - cleanup_dead_peers: Removes unresponsive peers
+        
+        Also scans the shared folder to index available files.
+        &#34;&#34;&#34;
+        try:
+            self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.server_socket.bind((self.host, self.port))
+            self.server_socket.listen(5)
+            self.running = True
+
+            print(f&#34;[SERVER]    Started on {self.host}:{self.port}&#34;)
+            print(f&#34;[SERVER]    Waiting for connections&#34;)
+            print(f&#34;[SERVER]    Shared directory: {self.shared_dir.absolute()}&#34;)
+            print(f&#34;[SERVER]    Downloads directory: {self.downloads_dir.absolute()}&#34;)
+
+
+            self.scan_shared_folder()
+
+            # Start background threads
+            accept_thread = threading.Thread(target=self.accept_connections)
+            accept_thread.daemon = True
+            accept_thread.start()
+
+            heartbeat_thread = threading.Thread(target=self.loop_heartbeat)
+            heartbeat_thread.daemon = True
+            heartbeat_thread.start()
+
+            cleanup_thread = threading.Thread(target=self.cleanup_dead_peers)
+            cleanup_thread.daemon = True
+            cleanup_thread.start()
+        except Exception as e:
+            print(f&#34;[ERROR]     Failed to start server: {e}&#34;)
+
+    def download_file(self, peer_host, peer_port, filename):
+        &#34;&#34;&#34;
+        Download a file from a peer using chunked transfer
+        
+        Downloads the file in chunks, displays progress, and verifies integrity
+        using SHA256 hash comparison.
+        
+        Args:
+            peer_host (str): IP address of the peer to download from
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file to download
+        
+        Returns:
+            bool: True if download successful and integrity verified, False otherwise
+        &#34;&#34;&#34;
+        print(f&#34;[DOWNLOAD] Starting download: {filename} from {peer_host}:{peer_port}&#34;)        
+        try:
+            file_info = self.request_file_info_for_download(peer_host, peer_port, filename)
+            
+            if not file_info:
+                print(f&#34;[ERROR]     Could not get file info from peer&#34;)
+                return False
+            
+            file_size = file_info[&#39;size&#39;]
+            file_hash = file_info[&#39;hash&#39;]
+            total_chunks = (file_size + self.chunk_size - 1) // self.chunk_size
+            
+            print(f&#34;[DOWNLOAD]  File size: {file_size} bytes&#34;)
+            print(f&#34;[DOWNLOAD]  Total chunks: {total_chunks}&#34;)
+            print(f&#34;[DOWNLOAD]  Expected hash: {file_hash[:32]}&#34;)
+
+            download_path = self.downloads_dir / filename
+            downloaded_chunks = 0
+            
+            with open(download_path, &#39;wb&#39;) as f:
+                for chunk_index in range(total_chunks):
+                    chunk_data = self.request_chunk(peer_host, peer_port, filename, chunk_index)
+                    
+                    if chunk_data is None:
+                        print(f&#34;\n[ERROR]     Failed to download chunk {chunk_index}&#34;)
+                        return False
+                    
+                    f.write(chunk_data)
+                    downloaded_chunks += 1
+                    
+                    progress = (downloaded_chunks / total_chunks) * 100
+                    print(f&#34;\r[DOWNLOAD]  Progress: {downloaded_chunks}/{total_chunks} chunks ({progress:.1f}%)&#34;, end=&#39;&#39;, flush=True)
+            
+            print(f&#34;[DOWNLOAD]  Download complete, saved to: {download_path}&#34;)
+            
+            downloaded_hash = self.calculate_file_hash(download_path)
+            
+            if downloaded_hash == file_hash:
+                print(f&#34;[DOWNLOAD]  File integrity verified&#34;)
+                return True
+            else:
+                print(f&#34;[ERROR]     File integrity check FAILED!&#34;)
+                print(f&#34;[ERROR]     Expected: {file_hash[:32]}...&#34;)
+                print(f&#34;[ERROR]     Got:      {downloaded_hash[:32]}...&#34;)
+                print(f&#34;[ERROR]     Deleting corrupted file&#34;)
+                download_path.unlink()
+                return False
+            
+        except Exception as e:
+            print(f&#34;[ERROR]     Download failed: {e}&#34;)
+            return False
+
+    def request_file_info_for_download(self, peer_host, peer_port, filename):
+        &#34;&#34;&#34;
+        Request file metadata from a peer before downloading
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file to query
+        
+        Returns:
+            dict: File metadata {&#39;path&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str} or None if failed
+        &#34;&#34;&#34;
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(10)
+            client_socket.connect((peer_host, peer_port))
+
+            request_msg = {
+                &#39;type&#39;: &#39;GET_FILE_INFO&#39;,
+                &#39;filename&#39;: filename,
+                &#39;requester&#39;: self.peer_id
+            }
+
+            client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                if response.get(&#39;type&#39;) == &#39;FILE_INFO&#39;:
+                    return response.get(&#39;info&#39;)
+            
+            client_socket.close()
+            
+        except Exception as e:
+            print(f&#34;[ERROR]      Failed to get file info: {e}&#34;)
+            return None
+
+    def request_chunk(self, peer_host, peer_port, filename, chunk_index):
+        &#34;&#34;&#34;
+        Request a specific chunk of a file from a peer
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file
+            chunk_index (int): Index of the chunk to download (0-based)
+        
+        Returns:
+            bytes: Chunk data or None if failed
+        
+        Protocol:
+            1. Send REQUEST_CHUNK message with JSON header
+            2. Receive CHUNK_DATA header with chunk size
+            3. Receive raw binary chunk data
+        &#34;&#34;&#34;
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(10)
+            client_socket.connect((peer_host, peer_port))
+            
+            request_msg = {
+                &#39;type&#39;: &#39;REQUEST_CHUNK&#39;,
+                &#39;filename&#39;: filename,
+                &#39;chunk_index&#39;: chunk_index,
+                &#39;chunk_size&#39;: self.chunk_size,
+                &#39;requester&#39;: self.peer_id
+            }
+            
+            client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+            
+            header_data = client_socket.recv(1024)
+            if not header_data:
+                return None
+            
+            header = json.loads(header_data.decode(&#39;utf-8&#39;))
+            
+            if header.get(&#39;type&#39;) == &#39;CHUNK_DATA&#39;:
+                chunk_size = header.get(&#39;chunk_size&#39;)
+                
+                chunk_data = b&#39;&#39;
+                remaining = chunk_size
+                
+                while remaining &gt; 0:
+                    data = client_socket.recv(min(remaining, 8192))
+                    if not data:
+                        break
+                    chunk_data += data
+                    remaining -= len(data)
+                
+                client_socket.close()
+                return chunk_data
+            
+            client_socket.close()
+            return None
+            
+        except Exception as e:
+            return None
+
+    def send_chunk(self, client_socket, filename, chunk_index, chunk_size):
+        &#34;&#34;&#34;
+        Send a specific chunk of a file to a requesting peer.
+        If file not found, sends error message instead
+        
+        Args:
+            client_socket (socket): Connected socket to send chunk through
+            filename (str): Name of the file to send chunk from
+            chunk_index (int): Index of the chunk to send (0-based)
+            chunk_size (int): Size of chunk to read in bytes
+        &#34;&#34;&#34;
+        try:
+            file_info = self.get_file_info(filename)
+            
+            if not file_info:
+                error_msg = {
+                    &#39;type&#39;: &#39;ERROR&#39;,
+                    &#39;message&#39;: f&#39;File not found: {filename}&#39;
+                }
+                client_socket.send(json.dumps(error_msg).encode(&#39;utf-8&#39;))
+                return
+            
+            filepath = file_info[&#39;path&#39;]
+
+            # Calculate byte offset for this chunk
+            offset = chunk_index * chunk_size
+            
+            # Read chunk from file
+            with open(filepath, &#39;rb&#39;) as f:
+                f.seek(offset)
+                chunk_data = f.read(chunk_size)
+            
+            # Send chunk header
+            header = {
+                &#39;type&#39;: &#39;CHUNK_DATA&#39;,
+                &#39;filename&#39;: filename,
+                &#39;chunk_index&#39;: chunk_index,
+                &#39;chunk_size&#39;: len(chunk_data)
+            }
+            
+            client_socket.send(json.dumps(header).encode(&#39;utf-8&#39;))
+            
+            # Small delay to ensure header is received first
+            time.sleep(0.01)
+            
+            # Send chunk data
+            client_socket.sendall(chunk_data)
+            
+        except Exception as e:
+            print(f&#34;[ERROR]      Failed to send chunk: {e}&#34;)
+    
+
+    def search_local(self, query):
+        &#34;&#34;&#34;
+        Search for files in the local file index
+        
+        Args:
+            query (str): Search term (case-insensitive, partial match)
+        
+        Returns:
+            list: List of matching files with metadata:
+                  [{&#39;filename&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str, 
+                    &#39;peer_id&#39;: str, &#39;peer_host&#39;: str, &#39;peer_port&#39;: int}]
+        &#34;&#34;&#34;
+        query_lower = query.lower()
+        results = []
+        
+        for filename, metadata in self.file_index.items():
+            if query_lower in filename.lower():
+                results.append({
+                    &#39;filename&#39;: filename,
+                    &#39;size&#39;: metadata[&#39;size&#39;],
+                    &#39;hash&#39;: metadata[&#39;hash&#39;],
+                    &#39;peer_id&#39;: self.peer_id,
+                    &#39;peer_host&#39;: self.host,
+                    &#39;peer_port&#39;: self.port
+                })
+        
+        return results
+
+    def search_network(self, query):
+        &#34;&#34;&#34;
+        Search for files across all connected peers.
+        Broadcasts search request and aggregates results.
+        Results from multiple peers are grouped by filename.
+        
+        Args:
+            query (str): Search term (case-insensitive, partial match)
+        
+        Returns:
+            list: Aggregated search results:
+                  [{&#39;filename&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str,
+                    &#39;peers&#39;: [{&#39;peer_id&#39;: str, &#39;host&#39;: str, &#39;port&#39;: int}]}]
+        &#34;&#34;&#34;
+        print(f&#34;[SEARCH]    Searching for: &#39;{query}&#39;&#34;)
+        print(f&#34;[SEARCH]    Querying {len(self.peers)} connected peers...&#34;)
+        
+        # Search locally first
+        local_results = self.search_local(query)
+        print(f&#34;[SEARCH]    Found {len(local_results)} local matches&#34;)
+        
+        # Generate unique search ID
+        search_id = f&#34;{self.peer_id}_{time.time()}&#34;
+        
+        # Initialize search results storage
+        with self.search_lock:
+            self.search_results[search_id] = {
+                &#39;query&#39;: query,
+                &#39;results&#39;: local_results.copy(),
+                &#39;responses_received&#39;: 0,
+                &#39;total_peers&#39;: len(self.peers)
+            }
+        
+        # Broadcast search to all peers in parallel
+        if self.peers:
+            search_threads = []
+            for peer_id, peer_info in list(self.peers.items()):
+                thread = threading.Thread(
+                    target=self.send_search_request,
+                    args=[peer_info[&#39;host&#39;], peer_info[&#39;port&#39;], query, search_id]
+                )
+                thread.daemon = True
+                thread.start()
+                search_threads.append(thread)
+            
+            # Wait for responses with timeout
+            start_time = time.time()
+            while time.time() - start_time &lt; self.search_timeout:
+                with self.search_lock:
+                    if search_id in self.search_results:
+                        if self.search_results[search_id][&#39;responses_received&#39;] &gt;= len(self.peers):
+                            break
+                time.sleep(0.1)
+        
+        # Get aggregated results and cleanup
+        with self.search_lock:
+            if search_id in self.search_results:
+                results = self.aggregate_search_results(search_id)
+                del self.search_results[search_id]
+            else:
+                results = []
+        
+        print(f&#34;[SEARCH]    Search complete. Found {len(results)} unique files&#34;)
+        return results
+
+    def send_search_request(self, peer_host, peer_port, query, search_id):
+        &#34;&#34;&#34;
+        Send a search request to a specific peer
+        Updates self.search_results[search_id] with peer&#39;s results
+        Increments responses_received counter
+        This method is called in a separate thread for each peer
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            query (str): Search term
+            search_id (str): Unique ID for this search operation
+        &#34;&#34;&#34;
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(self.search_timeout)
+            client_socket.connect((peer_host, peer_port))
+            
+            search_msg = {
+                &#39;type&#39;: &#39;SEARCH_REQUEST&#39;,
+                &#39;query&#39;: query,
+                &#39;requester&#39;: self.peer_id,
+                &#39;search_id&#39;: search_id
+            }
+            
+            client_socket.send(json.dumps(search_msg).encode(&#39;utf-8&#39;))
+            
+            # Wait for response
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                if response.get(&#39;type&#39;) == &#39;SEARCH_RESPONSE&#39;:
+                    results = response.get(&#39;results&#39;, [])
+                    
+                    # Add results to search cache
+                    with self.search_lock:
+                        if search_id in self.search_results:
+                            self.search_results[search_id][&#39;results&#39;].extend(results)
+                            self.search_results[search_id][&#39;responses_received&#39;] += 1
+                    
+                    print(f&#34;[SEARCH]    Received {len(results)} results from {peer_host}:{peer_port}&#34;)
+            
+            client_socket.close()
+            
+        except Exception as e:
+            with self.search_lock:
+                if search_id in self.search_results:
+                    self.search_results[search_id][&#39;responses_received&#39;] += 1
+
+    def aggregate_search_results(self, search_id):
+        &#34;&#34;&#34;
+        Aggregate search results from multiple peers.
+        Groups results by filename and collects all peers that have each file.
+        Removes duplicate peer entries for the same file.
+
+        Args:
+            search_id (str): Unique ID for the search operation
+        
+        Returns:
+            list: Aggregated results grouped by filename:
+                  [{&#39;filename&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str,
+                    &#39;peers&#39;: [{&#39;peer_id&#39;: str, &#39;host&#39;: str, &#39;port&#39;: int}]}]
+        &#34;&#34;&#34;
+        if search_id not in self.search_results:
+            return []
+        
+        all_results = self.search_results[search_id][&#39;results&#39;]
+        
+        # Group by filename
+        aggregated = {}
+        for result in all_results:
+            filename = result[&#39;filename&#39;]
+            if filename not in aggregated:
+                aggregated[filename] = {
+                    &#39;filename&#39;: filename,
+                    &#39;size&#39;: result[&#39;size&#39;],
+                    &#39;hash&#39;: result[&#39;hash&#39;],
+                    &#39;peers&#39;: []
+                }
+            peer_info = {
+                &#39;peer_id&#39;: result[&#39;peer_id&#39;],
+                &#39;host&#39;: result.get(&#39;peer_host&#39;),
+                &#39;port&#39;: result.get(&#39;peer_port&#39;)
+            }
+            # Avoid duplicates
+            if peer_info not in aggregated[filename][&#39;peers&#39;]:
+                aggregated[filename][&#39;peers&#39;].append(peer_info)
+        return list(aggregated.values())
+
+    def display_search_results(self, results):
+        &#34;&#34;&#34;
+        Pretty print search results
+
+        Args:
+            results (list): Search results from search_network() or aggregate_search_results()
+    
+        &#34;&#34;&#34;
+        print(f&#34;\n{&#39;=&#39;*50}&#34;)
+        print(f&#34;SEARCH RESULTS ({len(results)} files found)&#34;)
+        
+        if not results:
+            print(&#34;No files found matching your query.&#34;)
+        else:
+            for i, result in enumerate(results, 1):
+                filename = result[&#39;filename&#39;]
+                size_mb = result[&#39;size&#39;] / (1024 * 1024)
+                peers = result[&#39;peers&#39;]
+                
+                print(f&#34;\n{i}. {filename}&#34;)
+                print(f&#34;   Size: {size_mb:.2f} MB ({result[&#39;size&#39;]} bytes)&#34;)
+                print(f&#34;   Hash: {result[&#39;hash&#39;][:32]}...&#34;)
+                print(f&#34;   Available on {len(peers)} peer(s):&#34;)
+                
+                for peer in peers:
+                    peer_id = peer[&#39;peer_id&#39;]
+                    host = peer.get(&#39;host&#39;, &#39;unknown&#39;)
+                    port = peer.get(&#39;port&#39;, &#39;unknown&#39;)
+                    print(f&#34;      - {peer_id} ({host}:{port})&#34;)
+        
+        print(f&#34;{&#39;=&#39;*50}\n&#34;)
+
+
+    def calculate_file_hash(self, filepath):
+        &#34;&#34;&#34;
+        Calculate SHA256 hash of a file
+        Reads file in chunks to handle large files efficiently without
+        loading entire file into memory.
+        Chunk Size: 4096 bytes for hashing
+        
+        Args:
+            filepath (str or Path): Path to the file
+        
+        Returns:
+            str: Hex string of SHA256 hash or None if error
+        &#34;&#34;&#34;
+        sha256_hash = hashlib.sha256()
+        try:
+            with open(filepath, &#39;rb&#39;) as f:
+                for byte_block in iter(lambda: f.read(4096), b&#34;&#34;):
+                    sha256_hash.update(byte_block)
+            return sha256_hash.hexdigest()
+        except Exception as e:
+            print(f&#34;[ERROR]     Failed to hash {filepath}: {e}&#34;)
+            return None
+
+    def scan_shared_folder(self):
+        &#34;&#34;&#34;
+        Scan the shared folder and index all files
+        
+        Creates file_index dictionary with metadata for each file:
+        - filename (key)
+        - path: absolute path to file
+        - size: file size in bytes
+        - hash: SHA256 hash for integrity verification
+        
+        Updates self.file_index with current state of shared folder
+        Prints indexing progress to console
+        &#34;&#34;&#34;
+        print(f&#34;\n[INDEX]     Scanning shared folder: {self.shared_dir}&#34;)
+        self.file_index = {}
+        
+        if not self.shared_dir.exists():
+            print(f&#34;[WARNING]   Shared directory does not exist, creating it.&#34;)
+            self.shared_dir.mkdir(exist_ok=True)
+            return
+        
+        file_count = 0
+        for file_path in self.shared_dir.rglob(&#39;*&#39;):
+            if file_path.is_file():
+                filename = file_path.name
+                file_size = file_path.stat().st_size
+                
+                print(f&#34;[INDEX]     Hashing: {filename}&#34;, end=&#39; &#39;)
+                file_hash = self.calculate_file_hash(file_path)
+                
+                if file_hash:
+                    self.file_index[filename] = {
+                        &#39;path&#39;: str(file_path),
+                        &#39;size&#39;: file_size,
+                        &#39;hash&#39;: file_hash
+                    }
+                    size_mb = file_size / (1024 * 1024)
+                    print(f&#34;({size_mb:.2f} MB)&#34;)
+                    file_count += 1
+                else:
+                    print(&#34;[ERROR]     Indexing Failed&#34;)
+        print(f&#34;[INDEX]     Indexed {file_count} files\n&#34;)
+
+    def refresh_index(self):
+        &#34;&#34;&#34;Refresh the file index by rescanning the shared folder&#34;&#34;&#34;
+        print(&#34;[INDEX]     Refreshing file index.&#34;)
+        self.scan_shared_folder()
+
+    def get_file_list(self):
+        &#34;&#34;&#34;Get list of all available filenames&#34;&#34;&#34;
+        return list(self.file_index.keys())
+
+    def get_file_info(self, filename):
+        &#34;&#34;&#34;Get metadata for a specific file&#34;&#34;&#34;
+        return self.file_index.get(filename)
+
+    def list_files(self):
+        &#34;&#34;&#34;Display all shared files with detailed information&#34;&#34;&#34;
+        print(f&#34;\n{&#39;=&#39;*50}&#34;)
+        print(f&#34;SHARED FILES ({len(self.file_index)}):&#34;)
+
+        
+        if not self.file_index:
+            print(&#34;No files in shared folder.&#34;)
+            print(f&#34;Add files to: {self.shared_dir.absolute()}&#34;)
+        else:
+            for i, (filename, metadata) in enumerate(self.file_index.items(), 1):
+                size_mb = metadata[&#39;size&#39;] / (1024 * 1024)
+                file_hash = metadata[&#39;hash&#39;]
+                
+                print(f&#34;\n{i}. {filename}&#34;)
+                print(f&#34;   Size: {size_mb:.2f} MB ({metadata[&#39;size&#39;]} bytes)&#34;)
+                print(f&#34;   Hash: {file_hash[:32]}...&#34;)
+                print(f&#34;   Path: {metadata[&#39;path&#39;]}&#34;)
+        print(f&#34;{&#39;=&#39;*50}\n&#34;)
+
+    def request_peer_file_list(self, peer_host, peer_port):
+        &#34;&#34;&#34;
+        Request list of all files from a specific peer.
+        Prints formatted list of files to console.
+        
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+        
+        Returns:
+            list: List of filenames available on the peer or empty list if failed
+        &#34;&#34;&#34;
+        try:
+            print(f&#34;[CLIENT]    Requesting file list from {peer_host}:{peer_port}...&#34;)
+
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(5)
+            client_socket.connect((peer_host, peer_port))
+            request_msg = {
+                &#39;type&#39;: &#39;GET_FILE_LIST&#39;,
+                &#39;requester&#39;: self.peer_id
+            }
+            client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                if response.get(&#39;type&#39;) == &#39;FILE_LIST&#39;:
+                    files = response.get(&#39;files&#39;, [])
+                    peer_id = response.get(&#39;peer_id&#39;)
+                    
+                    print(f&#34;\n[FILE LIST] Files on {peer_id}:&#34;)
+                    print(f&#34;{&#39;=&#39;*50}&#34;)
+                    if not files:
+                        print(&#34;[ERROR]     No files available&#34;)
+                    else:
+                        for i, filename in enumerate(files, 1):
+                            print(f&#34;  {i}. {filename}&#34;)
+                    
+                    return files
+            
+            client_socket.close()
+            
+        except Exception as e:
+            print(f&#34;[ERROR]     Failed to get file list from {peer_host}:{peer_port}: {e}&#34;)
+            return []
+
+    def request_file_info(self, peer_host, peer_port, filename):
+        &#34;&#34;&#34;
+        Request detailed metadata for a specific file from a peer
+        Prints file information to console
+
+        Args:
+            peer_host (str): IP address of the peer
+            peer_port (int): Port number of the peer
+            filename (str): Name of the file to query
+        
+        Returns:
+            dict: File metadata {&#39;path&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str} or None if not found
+        &#34;&#34;&#34;
+        try:
+            print(f&#34;[CLIENT]    Requesting info for &#39;{filename}&#39; from {peer_host}:{peer_port}&#34;)
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(5)
+            client_socket.connect((peer_host, peer_port))
+            request_msg = {
+                &#39;type&#39;: &#39;GET_FILE_INFO&#39;,
+                &#39;filename&#39;: filename,
+                &#39;requester&#39;: self.peer_id
+            }
+            client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+            response_data = client_socket.recv(8192)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                if response.get(&#39;type&#39;) == &#39;FILE_INFO&#39;:
+                    file_info = response.get(&#39;info&#39;)
+                    if file_info:
+                        print(f&#34;\n[FILE INFO] {filename}&#34;)
+                        size_mb = file_info[&#39;size&#39;] / (1024 * 1024)
+                        print(f&#34;  Size: {size_mb:.2f} MB ({file_info[&#39;size&#39;]} bytes)&#34;)
+                        print(f&#34;  Hash: {file_info[&#39;hash&#39;]}&#34;)
+                        print(f&#34;{&#39;=&#39;*70}\n&#34;)
+                        return file_info
+                    else:
+                        print(f&#34;[INFO]      File &#39;{filename}&#39; not found on peer&#34;)
+            client_socket.close()
+        except Exception as e:
+            print(f&#34;[ERROR]     Failed to get file info: {e}&#34;)
+            return None
+
+    def accept_connections(self):
+        &#34;&#34;&#34;
+        Accept incoming peer connections (runs in background thread)
+        
+        Continuously accepts new connections and spawns a new thread
+        to handle each client using handle_client().
+        
+        Runs while self.running is True
+        &#34;&#34;&#34;
+        while self.running:
+            try:
+                client_socket, address = self.server_socket.accept()
+                # print(f&#34;[SERVER]    New connection from {address}&#34;)
+
+                client_thread = threading.Thread(
+                                    target=self.handle_client,
+                                    args=[client_socket, address]
+                                )
+                client_thread.daemon = True
+                client_thread.start()
+
+            except Exception as e:
+                if self.running:
+                    print(f&#34;[ERROR]    Error accepting connection: {e}&#34;)
+
+    def handle_client(self, client_socket, address):
+        &#34;&#34;&#34;
+        Handle communication with a connected peer.
+        Runs until client disconnects or error occurs
+        
+        Args:
+            client_socket (socket): Connected socket for this peer
+            address (tuple): (host, port) of the connected peer
+        
+        Special Handling:
+            - REQUEST_CHUNK messages are handled directly and close connection after sending
+            - All other messages are passed to process_message() for handling
+        &#34;&#34;&#34;
+        try:
+            while self.running:
+                data = client_socket.recv(8192)
+                
+                if not data:
+                    break
+                    
+                message = json.loads(data.decode(&#39;utf-8&#39;))
+                
+                # Special handling for chunk requests
+                if message.get(&#39;type&#39;) == &#39;REQUEST_CHUNK&#39;:
+                    filename = message.get(&#39;filename&#39;)
+                    chunk_index = message.get(&#39;chunk_index&#39;)
+                    chunk_size = message.get(&#39;chunk_size&#39;)
+                    requester = message.get(&#39;requester&#39;)
+                    
+                    print(f&#34;[SERVER]    Chunk request from {requester}: {filename} chunk {chunk_index}&#34;)
+                    self.send_chunk(client_socket, filename, chunk_index, chunk_size)
+                    break
+                else:
+                    response = self.process_message(message, address)
+                    if response:
+                        client_socket.send(json.dumps(response).encode(&#39;utf-8&#39;))
+                    
+        except Exception as e:
+            print(f&#34;[ERROR]     Error handling client {address}: {e}&#34;)
+        finally:
+            client_socket.close()
+
+    def process_message(self, message, address):
+        &#34;&#34;&#34;
+        Process incoming messages and generate appropriate responses
+        
+        Args:
+            message (dict): JSON message received from peer
+            address (tuple): (host, port) of the sender
+        
+        Returns:
+            dict: JSON response message or None
+        
+        Supported Message Types:
+            - PEER_DISCOVERY: Peer announces itself, returns peer list
+            - HEARTBEAT: Health check, returns acknowledgment
+            - GET_PEERS: Request peer list
+            - MESSAGE: Generic message with content
+            - SEARCH_REQUEST: Search for files
+            - GET_FILE_LIST: Request list of shared files
+            - GET_FILE_INFO: Request metadata for specific file
+            - REQUEST_CHUNK is handled separately in handle_client()
+        &#34;&#34;&#34;
+        msg_type = message.get(&#39;type&#39;)
+
+        if msg_type == &#39;PEER_DISCOVERY&#39;:
+            peer_info = message.get(&#39;peer_info&#39;)
+            print(f&#34;[SERVER]    Received PEER_DISCOVERY from {address}, peer info: {peer_info}&#34;)
+            self.add_peer(peer_info)
+            return {
+                &#39;type&#39;: &#39;PEER_DISCOVERY_RESPONSE&#39;,
+                &#39;peer_info&#39;: {
+                    &#39;peer_id&#39;: self.peer_id,
+                    &#39;host&#39;: self.host,
+                    &#39;port&#39;: self.port
+                },
+                &#39;known_peers&#39;: list(self.peers.values())
+            }
+
+        elif msg_type == &#39;HEARTBEAT&#39;:
+            peer_id = message.get(&#39;peer_id&#39;)
+            # print(f&#34;[SERVER]    Received HEARTBEAT from {address}, {peer_id}&#34;)
+            if peer_id in self.peers:
+                self.peers[peer_id][&#39;last_seen&#39;] = time.time()
+            return {
+                &#39;type&#39;: &#39;HEARTBEAT_ACK&#39;,
+                &#39;peer_id&#39;: self.peer_id,
+                &#39;timestamp&#39;: time.time()
+            }
+
+        elif msg_type == &#39;GET_PEERS&#39;:
+            print(f&#34;[SERVER]    Received GET_PEERS from {address}&#34;)
+            return {
+                &#39;type&#39;: &#39;PEER_LIST&#39;,
+                &#39;peers&#39;: list(self.peers.values())
+            }
+
+        elif msg_type == &#39;MESSAGE&#39;:
+            content = message.get(&#39;content&#39;, &#39;&#39;)
+            print(f&#34;[SERVER]    Message from {address}: {content}&#34;)
+            return {
+                &#39;type&#39;: &#39;ACK&#39;,
+                &#39;status&#39;: &#39;received&#39;
+            }
+
+        elif msg_type == &#39;SEARCH_REQUEST&#39;:
+            query = message.get(&#39;query&#39;)
+            requester = message.get(&#39;requester&#39;)
+            
+            print(f&#34;[SERVER]    Search request from {requester}: &#39;{query}&#39;&#34;)
+            
+            results = self.search_local(query)
+            
+            return {
+                &#39;type&#39;: &#39;SEARCH_RESPONSE&#39;,
+                &#39;query&#39;: query,
+                &#39;results&#39;: results,
+                &#39;peer_id&#39;: self.peer_id
+            }
+
+        elif msg_type == &#39;GET_FILE_LIST&#39;:
+            requester = message.get(&#39;requester&#39;)
+            print(f&#34;[SERVER] File list request from {requester}&#34;)
+            
+            return {
+                &#39;type&#39;: &#39;FILE_LIST&#39;,
+                &#39;files&#39;: self.get_file_list(),
+                &#39;peer_id&#39;: self.peer_id
+            }
+            
+        elif msg_type == &#39;GET_FILE_INFO&#39;:
+            filename = message.get(&#39;filename&#39;)
+            requester = message.get(&#39;requester&#39;)
+            print(f&#34;[SERVER]    File info request from {requester}: {filename}&#34;)
+            
+            file_info = self.get_file_info(filename)
+            
+            return {
+                &#39;type&#39;: &#39;FILE_INFO&#39;,
+                &#39;filename&#39;: filename,
+                &#39;info&#39;: file_info,
+                &#39;peer_id&#39;: self.peer_id
+            }
+
+        else:
+            print(f&#34;[SERVER]    Unknown message type: {msg_type}&#34;)
+            return {
+                &#39;type&#39;: &#39;ERROR&#39;,
+                &#39;status&#39;: &#39;unknown_type&#39;,
+                &#39;message&#39;: f&#39;Unknown message type: {msg_type}&#39;
+            }
+
+    def add_peer(self, peer_info):
+        &#34;&#34;&#34;
+        Add a peer to the known peers list.
+        Updates self.peers dictionary with peer information and current timestamp.
+        Won&#39;t add itself to peer list.
+        
+        Args:
+            peer_info (dict): Peer information containing:
+                - peer_id: Unique identifier (host:port)
+                - host: IP address
+                - port: Port number
+        &#34;&#34;&#34;
+        peer_id = peer_info.get(&#39;peer_id&#39;)
+        if peer_id and peer_id != self.peer_id:
+            self.peers[peer_id] = {
+                &#39;peer_id&#39;: peer_id,
+                &#39;host&#39;: peer_info.get(&#39;host&#39;),
+                &#39;port&#39;: peer_info.get(&#39;port&#39;),
+                &#39;last_seen&#39;: time.time()
+            }
+            print(f&#34;[DISCOVERY] Added peer: {peer_id}&#34;)
+
+
+    def connect_to_peer(self, peer_host, peer_port):
+        &#34;&#34;&#34;
+        Connect to another peer and perform peer discovery
+        
+        Args:
+            peer_host (str): IP address of peer to connect to
+            peer_port (int): Port number of peer
+        
+        Returns:
+            bool: True if connection successful, None if failed
+        &#34;&#34;&#34;
+        try:
+            print(f&#34;[CLIENT]    Connecting to {peer_host}:{peer_port}&#34;)
+
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(5)
+            client_socket.connect((peer_host, peer_port))
+
+            print(f&#34;[CLIENT]    Connected to {peer_host}:{peer_port}&#34;)
+
+            # Send discovery message
+            discovery_msg = {
+                &#39;type&#39;: &#39;PEER_DISCOVERY&#39;,
+                &#39;peer_info&#39;: {
+                    &#39;peer_id&#39;: self.peer_id,
+                    &#39;host&#39;: self.host,
+                    &#39;port&#39;: self.port
+                }
+            }
+            
+            client_socket.send(json.dumps(discovery_msg).encode(&#39;utf-8&#39;))
+
+            # Receive response with peer list
+            response_data = client_socket.recv(4096)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                
+                # Add the peer we connected to
+                self.add_peer(response.get(&#39;peer_info&#39;))
+                
+                # Add all peers known by the remote peer
+                known_peers = response.get(&#39;known_peers&#39;, [])
+                for peer in known_peers:
+                    self.add_peer(peer)
+
+                print(f&#34;[DISCOVERY] Discovered {len(known_peers)} peers&#34;)
+
+            client_socket.close()
+            return True
+
+        except Exception as e:
+            print(f&#34;[ERROR]     Failed to connect to {peer_host}:{peer_port}: {e}&#34;)
+            return None
+
+    def announce_to_peers(self):
+        &#34;&#34;&#34;
+        Announce presence to all known peers
+        
+        Attempts to connect to each known peer, triggering peer discovery.
+        Used to refresh connections or announce rejoining the network.
+        
+        Silently ignores connection failures to individual peers
+        &#34;&#34;&#34;
+        for peer_id, peer_info in list(self.peers.items()):
+            try:
+                self.connect_to_peer(peer_info[&#39;host&#39;], peer_info[&#39;port&#39;])
+            except:
+                pass
+    
+    def loop_heartbeat(self):
+        &#34;&#34;&#34;
+        Continuously send heartbeat to all peers (runs in background thread)
+        &#34;&#34;&#34;
+        while self.running:
+            time.sleep(self.heartbeat_interval)
+            for peer_id, peer_info in list(self.peers.items()):
+                try:
+                    self.send_heartbeat(peer_info[&#39;host&#39;], peer_info[&#39;port&#39;])
+                except:
+                    pass
+
+    def send_heartbeat(self, peer_host, peer_port):
+        &#34;&#34;&#34;
+        Send heartbeat message to a specific peer
+        Silently fails if connection cannot be established
+        
+        Args:
+            peer_host (str): IP address of peer
+            peer_port (int): Port number of peer
+        &#34;&#34;&#34;
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.settimeout(3)
+            client_socket.connect((peer_host, peer_port))
+
+            heartbeat_msg = {
+                &#39;type&#39;: &#39;HEARTBEAT&#39;,
+                &#39;peer_id&#39;: self.peer_id,
+                &#39;timestamp&#39;: time.time()
+            }
+            client_socket.send(json.dumps(heartbeat_msg).encode(&#39;utf-8&#39;))
+
+            # Wait for acknowledgment
+            response_data = client_socket.recv(4096)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                if response.get(&#39;type&#39;) == &#39;HEARTBEAT_ACK&#39;:
+                    peer_id = f&#34;{peer_host}:{peer_port}&#34;
+                    if peer_id in self.peers:
+                        self.peers[peer_id][&#39;last_seen&#39;] = time.time()
+            
+            client_socket.close()
+        
+        except:
+            pass  # Silently fail on heartbeat errors
+
+    def cleanup_dead_peers(self):
+        &#34;&#34;&#34;
+        Remove unresponsive peers from peer list (runs in background thread)
+        
+        Checks every 15 seconds for peers that haven&#39;t responded to heartbeat
+        in more than 30 seconds and removes them from the peer list.
+        
+        Timeout: 30 seconds without heartbeat response
+        Check Interval: 15 seconds
+        Runs while self.running is True
+        
+        Removes dead peers from self.peers dictionary
+        Prints cleanup messages to console
+        &#34;&#34;&#34;
+        timeout = 30
+
+        while self.running:
+            time.sleep(15)
+            current_time = time.time()
+            dead_peers = []
+
+            # Find peers that haven&#39;t been seen recently
+            for peer_id, peer_info in self.peers.items():
+                last_seen = peer_info.get(&#39;last_seen&#39;, 0)
+                if current_time - last_seen &gt; timeout:
+                    dead_peers.append(peer_id)
+
+            # Remove dead peers
+            for peer_id in dead_peers:
+                print(f&#34;[CLEANUP]   Removing dead peer: {peer_id}&#34;)
+                del self.peers[peer_id]
+
+    def list_peers(self):
+        &#34;&#34;&#34;Display list of all connected peers&#34;&#34;&#34;
+        print(f&#34;[INFO]      Known Peers ({len(self.peers)}):&#34;)
+        if not self.peers:
+            print(&#34;[INFO]      No peers connected yet.&#34;)
+        else:
+            for peer_id, peer_info in self.peers.items():
+                last_seen = peer_info.get(&#39;last_seen&#39;, 0)
+                time_ago = int(time.time() - last_seen)
+                print(f&#34;  • {peer_id} (last seen {time_ago}s ago)&#34;)
+
+    def send_message(self, peer_socket, message):
+        &#34;&#34;&#34;
+        Send a generic JSON message to a peer and wait for response
+        This is a utility method for simple request-response patterns
+
+        Args:
+            peer_socket (socket): Connected socket to send message through
+            message (dict): Message dictionary to send (will be JSON encoded)
+        
+        Returns:
+            dict: Response message or None if failed
+        
+        &#34;&#34;&#34;
+        try:
+            message_json = json.dumps(message)
+            peer_socket.send(message_json.encode(&#39;utf-8&#39;))
+            print(f&#34;[CLIENT]    Sent message&#34;)
+
+            response_data = peer_socket.recv(4096)
+            if response_data:
+                response = json.loads(response_data.decode(&#39;utf-8&#39;))
+                print(f&#34;[CLIENT]    Received response: {response}&#34;)
+                return response
+
+        except Exception as e:
+            print(f&#34;[ERROR]    Failed to send message: {e}&#34;)
+            return None
+
+    def stop_server(self):
+        &#34;&#34;&#34;
+        Stop the server and close all connections
+        &#34;&#34;&#34;
+        print(&#34;[SERVER]    Shutting down\n&#34;)
+        self.running = False
+        if self.server_socket:
+            self.server_socket.close()</code></pre>
+</details>
+<div class="desc"><p>Peer-to-Peer File Sharing Node</p>
+<p>A complete P2P node that can discover peers, share files, search the network,
+and transfer files in chunks with integrity verification.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address this node listens on</dd>
+<dt><strong><code>port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number this node listens on</dd>
+<dt><strong><code>server_socket</code></strong> :&ensp;<code>socket</code></dt>
+<dd>Server socket for accepting connections</dd>
+<dt><strong><code>running</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Server running state</dd>
+<dt><strong><code>peers</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary of connected peers {peer_id: peer_info}</dd>
+<dt><strong><code>peer_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier for this peer (host:port)</dd>
+<dt><strong><code>heartbeat_interval</code></strong> :&ensp;<code>int</code></dt>
+<dd>Seconds between heartbeat checks</dd>
+<dt><strong><code>shared_dir</code></strong> :&ensp;<code>Path</code></dt>
+<dd>Directory containing files to share</dd>
+<dt><strong><code>file_index</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Index of shared files {filename: metadata}</dd>
+<dt><strong><code>search_results</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Temporary storage for search operations</dd>
+<dt><strong><code>search_timeout</code></strong> :&ensp;<code>int</code></dt>
+<dd>Timeout for search operations in seconds</dd>
+<dt><strong><code>search_lock</code></strong> :&ensp;<code>threading.Lock</code></dt>
+<dd>Thread-safe lock for search operations</dd>
+<dt><strong><code>chunk_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>Size of file chunks in bytes (8KB)</dd>
+<dt><strong><code>downloads_dir</code></strong> :&ensp;<code>Path</code></dt>
+<dd>Directory where downloaded files are saved</dd>
+</dl>
+<p>Initialize a P2P node</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address to bind to. Default: '127.0.0.1'</dd>
+<dt><strong><code>port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number to listen on. Default: 5000</dd>
+<dt><strong><code>shared_dir</code></strong> :&ensp;<code>str</code></dt>
+<dd>Directory name for shared files. Default: 'shared'</dd>
+<dt><strong><code>downloads_dir</code></strong> :&ensp;<code>str</code></dt>
+<dd>Directory name for downloads. Default: 'downloads'</dd>
+</dl>
+<h2 id="note">Note</h2>
+<p>Port number is appended to directory names to allow multiple nodes
+on the same machine (e.g., 'shared5000', 'downloads5001')</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="p2p.P2P.accept_connections"><code class="name flex">
+<span>def <span class="ident">accept_connections</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accept_connections(self):
+    &#34;&#34;&#34;
+    Accept incoming peer connections (runs in background thread)
+    
+    Continuously accepts new connections and spawns a new thread
+    to handle each client using handle_client().
+    
+    Runs while self.running is True
+    &#34;&#34;&#34;
+    while self.running:
+        try:
+            client_socket, address = self.server_socket.accept()
+            # print(f&#34;[SERVER]    New connection from {address}&#34;)
+
+            client_thread = threading.Thread(
+                                target=self.handle_client,
+                                args=[client_socket, address]
+                            )
+            client_thread.daemon = True
+            client_thread.start()
+
+        except Exception as e:
+            if self.running:
+                print(f&#34;[ERROR]    Error accepting connection: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Accept incoming peer connections (runs in background thread)</p>
+<p>Continuously accepts new connections and spawns a new thread
+to handle each client using handle_client().</p>
+<p>Runs while self.running is True</p></div>
+</dd>
+<dt id="p2p.P2P.add_peer"><code class="name flex">
+<span>def <span class="ident">add_peer</span></span>(<span>self, peer_info)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_peer(self, peer_info):
+    &#34;&#34;&#34;
+    Add a peer to the known peers list.
+    Updates self.peers dictionary with peer information and current timestamp.
+    Won&#39;t add itself to peer list.
+    
+    Args:
+        peer_info (dict): Peer information containing:
+            - peer_id: Unique identifier (host:port)
+            - host: IP address
+            - port: Port number
+    &#34;&#34;&#34;
+    peer_id = peer_info.get(&#39;peer_id&#39;)
+    if peer_id and peer_id != self.peer_id:
+        self.peers[peer_id] = {
+            &#39;peer_id&#39;: peer_id,
+            &#39;host&#39;: peer_info.get(&#39;host&#39;),
+            &#39;port&#39;: peer_info.get(&#39;port&#39;),
+            &#39;last_seen&#39;: time.time()
+        }
+        print(f&#34;[DISCOVERY] Added peer: {peer_id}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Add a peer to the known peers list.
+Updates self.peers dictionary with peer information and current timestamp.
+Won't add itself to peer list.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_info</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Peer information containing:
+- peer_id: Unique identifier (host:port)
+- host: IP address
+- port: Port number</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.aggregate_search_results"><code class="name flex">
+<span>def <span class="ident">aggregate_search_results</span></span>(<span>self, search_id)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def aggregate_search_results(self, search_id):
+    &#34;&#34;&#34;
+    Aggregate search results from multiple peers.
+    Groups results by filename and collects all peers that have each file.
+    Removes duplicate peer entries for the same file.
+
+    Args:
+        search_id (str): Unique ID for the search operation
+    
+    Returns:
+        list: Aggregated results grouped by filename:
+              [{&#39;filename&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str,
+                &#39;peers&#39;: [{&#39;peer_id&#39;: str, &#39;host&#39;: str, &#39;port&#39;: int}]}]
+    &#34;&#34;&#34;
+    if search_id not in self.search_results:
+        return []
+    
+    all_results = self.search_results[search_id][&#39;results&#39;]
+    
+    # Group by filename
+    aggregated = {}
+    for result in all_results:
+        filename = result[&#39;filename&#39;]
+        if filename not in aggregated:
+            aggregated[filename] = {
+                &#39;filename&#39;: filename,
+                &#39;size&#39;: result[&#39;size&#39;],
+                &#39;hash&#39;: result[&#39;hash&#39;],
+                &#39;peers&#39;: []
+            }
+        peer_info = {
+            &#39;peer_id&#39;: result[&#39;peer_id&#39;],
+            &#39;host&#39;: result.get(&#39;peer_host&#39;),
+            &#39;port&#39;: result.get(&#39;peer_port&#39;)
+        }
+        # Avoid duplicates
+        if peer_info not in aggregated[filename][&#39;peers&#39;]:
+            aggregated[filename][&#39;peers&#39;].append(peer_info)
+    return list(aggregated.values())</code></pre>
+</details>
+<div class="desc"><p>Aggregate search results from multiple peers.
+Groups results by filename and collects all peers that have each file.
+Removes duplicate peer entries for the same file.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>search_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique ID for the search operation</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Aggregated results grouped by filename:
+[{'filename': str, 'size': int, 'hash': str,
+'peers': [{'peer_id': str, 'host': str, 'port': int}]}]</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.announce_to_peers"><code class="name flex">
+<span>def <span class="ident">announce_to_peers</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def announce_to_peers(self):
+    &#34;&#34;&#34;
+    Announce presence to all known peers
+    
+    Attempts to connect to each known peer, triggering peer discovery.
+    Used to refresh connections or announce rejoining the network.
+    
+    Silently ignores connection failures to individual peers
+    &#34;&#34;&#34;
+    for peer_id, peer_info in list(self.peers.items()):
+        try:
+            self.connect_to_peer(peer_info[&#39;host&#39;], peer_info[&#39;port&#39;])
+        except:
+            pass</code></pre>
+</details>
+<div class="desc"><p>Announce presence to all known peers</p>
+<p>Attempts to connect to each known peer, triggering peer discovery.
+Used to refresh connections or announce rejoining the network.</p>
+<p>Silently ignores connection failures to individual peers</p></div>
+</dd>
+<dt id="p2p.P2P.calculate_file_hash"><code class="name flex">
+<span>def <span class="ident">calculate_file_hash</span></span>(<span>self, filepath)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_file_hash(self, filepath):
+    &#34;&#34;&#34;
+    Calculate SHA256 hash of a file
+    Reads file in chunks to handle large files efficiently without
+    loading entire file into memory.
+    Chunk Size: 4096 bytes for hashing
+    
+    Args:
+        filepath (str or Path): Path to the file
+    
+    Returns:
+        str: Hex string of SHA256 hash or None if error
+    &#34;&#34;&#34;
+    sha256_hash = hashlib.sha256()
+    try:
+        with open(filepath, &#39;rb&#39;) as f:
+            for byte_block in iter(lambda: f.read(4096), b&#34;&#34;):
+                sha256_hash.update(byte_block)
+        return sha256_hash.hexdigest()
+    except Exception as e:
+        print(f&#34;[ERROR]     Failed to hash {filepath}: {e}&#34;)
+        return None</code></pre>
+</details>
+<div class="desc"><p>Calculate SHA256 hash of a file
+Reads file in chunks to handle large files efficiently without
+loading entire file into memory.
+Chunk Size: 4096 bytes for hashing</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>filepath</code></strong> :&ensp;<code>str</code> or <code>Path</code></dt>
+<dd>Path to the file</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Hex string of SHA256 hash or None if error</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.cleanup_dead_peers"><code class="name flex">
+<span>def <span class="ident">cleanup_dead_peers</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleanup_dead_peers(self):
+    &#34;&#34;&#34;
+    Remove unresponsive peers from peer list (runs in background thread)
+    
+    Checks every 15 seconds for peers that haven&#39;t responded to heartbeat
+    in more than 30 seconds and removes them from the peer list.
+    
+    Timeout: 30 seconds without heartbeat response
+    Check Interval: 15 seconds
+    Runs while self.running is True
+    
+    Removes dead peers from self.peers dictionary
+    Prints cleanup messages to console
+    &#34;&#34;&#34;
+    timeout = 30
+
+    while self.running:
+        time.sleep(15)
+        current_time = time.time()
+        dead_peers = []
+
+        # Find peers that haven&#39;t been seen recently
+        for peer_id, peer_info in self.peers.items():
+            last_seen = peer_info.get(&#39;last_seen&#39;, 0)
+            if current_time - last_seen &gt; timeout:
+                dead_peers.append(peer_id)
+
+        # Remove dead peers
+        for peer_id in dead_peers:
+            print(f&#34;[CLEANUP]   Removing dead peer: {peer_id}&#34;)
+            del self.peers[peer_id]</code></pre>
+</details>
+<div class="desc"><p>Remove unresponsive peers from peer list (runs in background thread)</p>
+<p>Checks every 15 seconds for peers that haven't responded to heartbeat
+in more than 30 seconds and removes them from the peer list.</p>
+<p>Timeout: 30 seconds without heartbeat response
+Check Interval: 15 seconds
+Runs while self.running is True</p>
+<p>Removes dead peers from self.peers dictionary
+Prints cleanup messages to console</p></div>
+</dd>
+<dt id="p2p.P2P.connect_to_peer"><code class="name flex">
+<span>def <span class="ident">connect_to_peer</span></span>(<span>self, peer_host, peer_port)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect_to_peer(self, peer_host, peer_port):
+    &#34;&#34;&#34;
+    Connect to another peer and perform peer discovery
+    
+    Args:
+        peer_host (str): IP address of peer to connect to
+        peer_port (int): Port number of peer
+    
+    Returns:
+        bool: True if connection successful, None if failed
+    &#34;&#34;&#34;
+    try:
+        print(f&#34;[CLIENT]    Connecting to {peer_host}:{peer_port}&#34;)
+
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(5)
+        client_socket.connect((peer_host, peer_port))
+
+        print(f&#34;[CLIENT]    Connected to {peer_host}:{peer_port}&#34;)
+
+        # Send discovery message
+        discovery_msg = {
+            &#39;type&#39;: &#39;PEER_DISCOVERY&#39;,
+            &#39;peer_info&#39;: {
+                &#39;peer_id&#39;: self.peer_id,
+                &#39;host&#39;: self.host,
+                &#39;port&#39;: self.port
+            }
+        }
+        
+        client_socket.send(json.dumps(discovery_msg).encode(&#39;utf-8&#39;))
+
+        # Receive response with peer list
+        response_data = client_socket.recv(4096)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            
+            # Add the peer we connected to
+            self.add_peer(response.get(&#39;peer_info&#39;))
+            
+            # Add all peers known by the remote peer
+            known_peers = response.get(&#39;known_peers&#39;, [])
+            for peer in known_peers:
+                self.add_peer(peer)
+
+            print(f&#34;[DISCOVERY] Discovered {len(known_peers)} peers&#34;)
+
+        client_socket.close()
+        return True
+
+    except Exception as e:
+        print(f&#34;[ERROR]     Failed to connect to {peer_host}:{peer_port}: {e}&#34;)
+        return None</code></pre>
+</details>
+<div class="desc"><p>Connect to another peer and perform peer discovery</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of peer to connect to</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of peer</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if connection successful, None if failed</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.display_search_results"><code class="name flex">
+<span>def <span class="ident">display_search_results</span></span>(<span>self, results)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def display_search_results(self, results):
+    &#34;&#34;&#34;
+    Pretty print search results
+
+    Args:
+        results (list): Search results from search_network() or aggregate_search_results()
+
+    &#34;&#34;&#34;
+    print(f&#34;\n{&#39;=&#39;*50}&#34;)
+    print(f&#34;SEARCH RESULTS ({len(results)} files found)&#34;)
+    
+    if not results:
+        print(&#34;No files found matching your query.&#34;)
+    else:
+        for i, result in enumerate(results, 1):
+            filename = result[&#39;filename&#39;]
+            size_mb = result[&#39;size&#39;] / (1024 * 1024)
+            peers = result[&#39;peers&#39;]
+            
+            print(f&#34;\n{i}. {filename}&#34;)
+            print(f&#34;   Size: {size_mb:.2f} MB ({result[&#39;size&#39;]} bytes)&#34;)
+            print(f&#34;   Hash: {result[&#39;hash&#39;][:32]}...&#34;)
+            print(f&#34;   Available on {len(peers)} peer(s):&#34;)
+            
+            for peer in peers:
+                peer_id = peer[&#39;peer_id&#39;]
+                host = peer.get(&#39;host&#39;, &#39;unknown&#39;)
+                port = peer.get(&#39;port&#39;, &#39;unknown&#39;)
+                print(f&#34;      - {peer_id} ({host}:{port})&#34;)
+    
+    print(f&#34;{&#39;=&#39;*50}\n&#34;)</code></pre>
+</details>
+<div class="desc"><p>Pretty print search results</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>results</code></strong> :&ensp;<code>list</code></dt>
+<dd>Search results from search_network() or aggregate_search_results()</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.download_file"><code class="name flex">
+<span>def <span class="ident">download_file</span></span>(<span>self, peer_host, peer_port, filename)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def download_file(self, peer_host, peer_port, filename):
+    &#34;&#34;&#34;
+    Download a file from a peer using chunked transfer
+    
+    Downloads the file in chunks, displays progress, and verifies integrity
+    using SHA256 hash comparison.
+    
+    Args:
+        peer_host (str): IP address of the peer to download from
+        peer_port (int): Port number of the peer
+        filename (str): Name of the file to download
+    
+    Returns:
+        bool: True if download successful and integrity verified, False otherwise
+    &#34;&#34;&#34;
+    print(f&#34;[DOWNLOAD] Starting download: {filename} from {peer_host}:{peer_port}&#34;)        
+    try:
+        file_info = self.request_file_info_for_download(peer_host, peer_port, filename)
+        
+        if not file_info:
+            print(f&#34;[ERROR]     Could not get file info from peer&#34;)
+            return False
+        
+        file_size = file_info[&#39;size&#39;]
+        file_hash = file_info[&#39;hash&#39;]
+        total_chunks = (file_size + self.chunk_size - 1) // self.chunk_size
+        
+        print(f&#34;[DOWNLOAD]  File size: {file_size} bytes&#34;)
+        print(f&#34;[DOWNLOAD]  Total chunks: {total_chunks}&#34;)
+        print(f&#34;[DOWNLOAD]  Expected hash: {file_hash[:32]}&#34;)
+
+        download_path = self.downloads_dir / filename
+        downloaded_chunks = 0
+        
+        with open(download_path, &#39;wb&#39;) as f:
+            for chunk_index in range(total_chunks):
+                chunk_data = self.request_chunk(peer_host, peer_port, filename, chunk_index)
+                
+                if chunk_data is None:
+                    print(f&#34;\n[ERROR]     Failed to download chunk {chunk_index}&#34;)
+                    return False
+                
+                f.write(chunk_data)
+                downloaded_chunks += 1
+                
+                progress = (downloaded_chunks / total_chunks) * 100
+                print(f&#34;\r[DOWNLOAD]  Progress: {downloaded_chunks}/{total_chunks} chunks ({progress:.1f}%)&#34;, end=&#39;&#39;, flush=True)
+        
+        print(f&#34;[DOWNLOAD]  Download complete, saved to: {download_path}&#34;)
+        
+        downloaded_hash = self.calculate_file_hash(download_path)
+        
+        if downloaded_hash == file_hash:
+            print(f&#34;[DOWNLOAD]  File integrity verified&#34;)
+            return True
+        else:
+            print(f&#34;[ERROR]     File integrity check FAILED!&#34;)
+            print(f&#34;[ERROR]     Expected: {file_hash[:32]}...&#34;)
+            print(f&#34;[ERROR]     Got:      {downloaded_hash[:32]}...&#34;)
+            print(f&#34;[ERROR]     Deleting corrupted file&#34;)
+            download_path.unlink()
+            return False
+        
+    except Exception as e:
+        print(f&#34;[ERROR]     Download failed: {e}&#34;)
+        return False</code></pre>
+</details>
+<div class="desc"><p>Download a file from a peer using chunked transfer</p>
+<p>Downloads the file in chunks, displays progress, and verifies integrity
+using SHA256 hash comparison.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the peer to download from</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of the peer</dd>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the file to download</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if download successful and integrity verified, False otherwise</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.get_file_info"><code class="name flex">
+<span>def <span class="ident">get_file_info</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_file_info(self, filename):
+    &#34;&#34;&#34;Get metadata for a specific file&#34;&#34;&#34;
+    return self.file_index.get(filename)</code></pre>
+</details>
+<div class="desc"><p>Get metadata for a specific file</p></div>
+</dd>
+<dt id="p2p.P2P.get_file_list"><code class="name flex">
+<span>def <span class="ident">get_file_list</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_file_list(self):
+    &#34;&#34;&#34;Get list of all available filenames&#34;&#34;&#34;
+    return list(self.file_index.keys())</code></pre>
+</details>
+<div class="desc"><p>Get list of all available filenames</p></div>
+</dd>
+<dt id="p2p.P2P.handle_client"><code class="name flex">
+<span>def <span class="ident">handle_client</span></span>(<span>self, client_socket, address)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_client(self, client_socket, address):
+    &#34;&#34;&#34;
+    Handle communication with a connected peer.
+    Runs until client disconnects or error occurs
+    
+    Args:
+        client_socket (socket): Connected socket for this peer
+        address (tuple): (host, port) of the connected peer
+    
+    Special Handling:
+        - REQUEST_CHUNK messages are handled directly and close connection after sending
+        - All other messages are passed to process_message() for handling
+    &#34;&#34;&#34;
+    try:
+        while self.running:
+            data = client_socket.recv(8192)
+            
+            if not data:
+                break
+                
+            message = json.loads(data.decode(&#39;utf-8&#39;))
+            
+            # Special handling for chunk requests
+            if message.get(&#39;type&#39;) == &#39;REQUEST_CHUNK&#39;:
+                filename = message.get(&#39;filename&#39;)
+                chunk_index = message.get(&#39;chunk_index&#39;)
+                chunk_size = message.get(&#39;chunk_size&#39;)
+                requester = message.get(&#39;requester&#39;)
+                
+                print(f&#34;[SERVER]    Chunk request from {requester}: {filename} chunk {chunk_index}&#34;)
+                self.send_chunk(client_socket, filename, chunk_index, chunk_size)
+                break
+            else:
+                response = self.process_message(message, address)
+                if response:
+                    client_socket.send(json.dumps(response).encode(&#39;utf-8&#39;))
+                
+    except Exception as e:
+        print(f&#34;[ERROR]     Error handling client {address}: {e}&#34;)
+    finally:
+        client_socket.close()</code></pre>
+</details>
+<div class="desc"><p>Handle communication with a connected peer.
+Runs until client disconnects or error occurs</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>client_socket</code></strong> :&ensp;<code>socket</code></dt>
+<dd>Connected socket for this peer</dd>
+<dt><strong><code>address</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>(host, port) of the connected peer</dd>
+</dl>
+<p>Special Handling:
+- REQUEST_CHUNK messages are handled directly and close connection after sending
+- All other messages are passed to process_message() for handling</p></div>
+</dd>
+<dt id="p2p.P2P.list_files"><code class="name flex">
+<span>def <span class="ident">list_files</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_files(self):
+    &#34;&#34;&#34;Display all shared files with detailed information&#34;&#34;&#34;
+    print(f&#34;\n{&#39;=&#39;*50}&#34;)
+    print(f&#34;SHARED FILES ({len(self.file_index)}):&#34;)
+
+    
+    if not self.file_index:
+        print(&#34;No files in shared folder.&#34;)
+        print(f&#34;Add files to: {self.shared_dir.absolute()}&#34;)
+    else:
+        for i, (filename, metadata) in enumerate(self.file_index.items(), 1):
+            size_mb = metadata[&#39;size&#39;] / (1024 * 1024)
+            file_hash = metadata[&#39;hash&#39;]
+            
+            print(f&#34;\n{i}. {filename}&#34;)
+            print(f&#34;   Size: {size_mb:.2f} MB ({metadata[&#39;size&#39;]} bytes)&#34;)
+            print(f&#34;   Hash: {file_hash[:32]}...&#34;)
+            print(f&#34;   Path: {metadata[&#39;path&#39;]}&#34;)
+    print(f&#34;{&#39;=&#39;*50}\n&#34;)</code></pre>
+</details>
+<div class="desc"><p>Display all shared files with detailed information</p></div>
+</dd>
+<dt id="p2p.P2P.list_peers"><code class="name flex">
+<span>def <span class="ident">list_peers</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_peers(self):
+    &#34;&#34;&#34;Display list of all connected peers&#34;&#34;&#34;
+    print(f&#34;[INFO]      Known Peers ({len(self.peers)}):&#34;)
+    if not self.peers:
+        print(&#34;[INFO]      No peers connected yet.&#34;)
+    else:
+        for peer_id, peer_info in self.peers.items():
+            last_seen = peer_info.get(&#39;last_seen&#39;, 0)
+            time_ago = int(time.time() - last_seen)
+            print(f&#34;  • {peer_id} (last seen {time_ago}s ago)&#34;)</code></pre>
+</details>
+<div class="desc"><p>Display list of all connected peers</p></div>
+</dd>
+<dt id="p2p.P2P.loop_heartbeat"><code class="name flex">
+<span>def <span class="ident">loop_heartbeat</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loop_heartbeat(self):
+    &#34;&#34;&#34;
+    Continuously send heartbeat to all peers (runs in background thread)
+    &#34;&#34;&#34;
+    while self.running:
+        time.sleep(self.heartbeat_interval)
+        for peer_id, peer_info in list(self.peers.items()):
+            try:
+                self.send_heartbeat(peer_info[&#39;host&#39;], peer_info[&#39;port&#39;])
+            except:
+                pass</code></pre>
+</details>
+<div class="desc"><p>Continuously send heartbeat to all peers (runs in background thread)</p></div>
+</dd>
+<dt id="p2p.P2P.process_message"><code class="name flex">
+<span>def <span class="ident">process_message</span></span>(<span>self, message, address)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_message(self, message, address):
+    &#34;&#34;&#34;
+    Process incoming messages and generate appropriate responses
+    
+    Args:
+        message (dict): JSON message received from peer
+        address (tuple): (host, port) of the sender
+    
+    Returns:
+        dict: JSON response message or None
+    
+    Supported Message Types:
+        - PEER_DISCOVERY: Peer announces itself, returns peer list
+        - HEARTBEAT: Health check, returns acknowledgment
+        - GET_PEERS: Request peer list
+        - MESSAGE: Generic message with content
+        - SEARCH_REQUEST: Search for files
+        - GET_FILE_LIST: Request list of shared files
+        - GET_FILE_INFO: Request metadata for specific file
+        - REQUEST_CHUNK is handled separately in handle_client()
+    &#34;&#34;&#34;
+    msg_type = message.get(&#39;type&#39;)
+
+    if msg_type == &#39;PEER_DISCOVERY&#39;:
+        peer_info = message.get(&#39;peer_info&#39;)
+        print(f&#34;[SERVER]    Received PEER_DISCOVERY from {address}, peer info: {peer_info}&#34;)
+        self.add_peer(peer_info)
+        return {
+            &#39;type&#39;: &#39;PEER_DISCOVERY_RESPONSE&#39;,
+            &#39;peer_info&#39;: {
+                &#39;peer_id&#39;: self.peer_id,
+                &#39;host&#39;: self.host,
+                &#39;port&#39;: self.port
+            },
+            &#39;known_peers&#39;: list(self.peers.values())
+        }
+
+    elif msg_type == &#39;HEARTBEAT&#39;:
+        peer_id = message.get(&#39;peer_id&#39;)
+        # print(f&#34;[SERVER]    Received HEARTBEAT from {address}, {peer_id}&#34;)
+        if peer_id in self.peers:
+            self.peers[peer_id][&#39;last_seen&#39;] = time.time()
+        return {
+            &#39;type&#39;: &#39;HEARTBEAT_ACK&#39;,
+            &#39;peer_id&#39;: self.peer_id,
+            &#39;timestamp&#39;: time.time()
+        }
+
+    elif msg_type == &#39;GET_PEERS&#39;:
+        print(f&#34;[SERVER]    Received GET_PEERS from {address}&#34;)
+        return {
+            &#39;type&#39;: &#39;PEER_LIST&#39;,
+            &#39;peers&#39;: list(self.peers.values())
+        }
+
+    elif msg_type == &#39;MESSAGE&#39;:
+        content = message.get(&#39;content&#39;, &#39;&#39;)
+        print(f&#34;[SERVER]    Message from {address}: {content}&#34;)
+        return {
+            &#39;type&#39;: &#39;ACK&#39;,
+            &#39;status&#39;: &#39;received&#39;
+        }
+
+    elif msg_type == &#39;SEARCH_REQUEST&#39;:
+        query = message.get(&#39;query&#39;)
+        requester = message.get(&#39;requester&#39;)
+        
+        print(f&#34;[SERVER]    Search request from {requester}: &#39;{query}&#39;&#34;)
+        
+        results = self.search_local(query)
+        
+        return {
+            &#39;type&#39;: &#39;SEARCH_RESPONSE&#39;,
+            &#39;query&#39;: query,
+            &#39;results&#39;: results,
+            &#39;peer_id&#39;: self.peer_id
+        }
+
+    elif msg_type == &#39;GET_FILE_LIST&#39;:
+        requester = message.get(&#39;requester&#39;)
+        print(f&#34;[SERVER] File list request from {requester}&#34;)
+        
+        return {
+            &#39;type&#39;: &#39;FILE_LIST&#39;,
+            &#39;files&#39;: self.get_file_list(),
+            &#39;peer_id&#39;: self.peer_id
+        }
+        
+    elif msg_type == &#39;GET_FILE_INFO&#39;:
+        filename = message.get(&#39;filename&#39;)
+        requester = message.get(&#39;requester&#39;)
+        print(f&#34;[SERVER]    File info request from {requester}: {filename}&#34;)
+        
+        file_info = self.get_file_info(filename)
+        
+        return {
+            &#39;type&#39;: &#39;FILE_INFO&#39;,
+            &#39;filename&#39;: filename,
+            &#39;info&#39;: file_info,
+            &#39;peer_id&#39;: self.peer_id
+        }
+
+    else:
+        print(f&#34;[SERVER]    Unknown message type: {msg_type}&#34;)
+        return {
+            &#39;type&#39;: &#39;ERROR&#39;,
+            &#39;status&#39;: &#39;unknown_type&#39;,
+            &#39;message&#39;: f&#39;Unknown message type: {msg_type}&#39;
+        }</code></pre>
+</details>
+<div class="desc"><p>Process incoming messages and generate appropriate responses</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>message</code></strong> :&ensp;<code>dict</code></dt>
+<dd>JSON message received from peer</dd>
+<dt><strong><code>address</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>(host, port) of the sender</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>JSON response message or None</dd>
+</dl>
+<p>Supported Message Types:
+- PEER_DISCOVERY: Peer announces itself, returns peer list
+- HEARTBEAT: Health check, returns acknowledgment
+- GET_PEERS: Request peer list
+- MESSAGE: Generic message with content
+- SEARCH_REQUEST: Search for files
+- GET_FILE_LIST: Request list of shared files
+- GET_FILE_INFO: Request metadata for specific file
+- REQUEST_CHUNK is handled separately in handle_client()</p></div>
+</dd>
+<dt id="p2p.P2P.refresh_index"><code class="name flex">
+<span>def <span class="ident">refresh_index</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def refresh_index(self):
+    &#34;&#34;&#34;Refresh the file index by rescanning the shared folder&#34;&#34;&#34;
+    print(&#34;[INDEX]     Refreshing file index.&#34;)
+    self.scan_shared_folder()</code></pre>
+</details>
+<div class="desc"><p>Refresh the file index by rescanning the shared folder</p></div>
+</dd>
+<dt id="p2p.P2P.request_chunk"><code class="name flex">
+<span>def <span class="ident">request_chunk</span></span>(<span>self, peer_host, peer_port, filename, chunk_index)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def request_chunk(self, peer_host, peer_port, filename, chunk_index):
+    &#34;&#34;&#34;
+    Request a specific chunk of a file from a peer
+    
+    Args:
+        peer_host (str): IP address of the peer
+        peer_port (int): Port number of the peer
+        filename (str): Name of the file
+        chunk_index (int): Index of the chunk to download (0-based)
+    
+    Returns:
+        bytes: Chunk data or None if failed
+    
+    Protocol:
+        1. Send REQUEST_CHUNK message with JSON header
+        2. Receive CHUNK_DATA header with chunk size
+        3. Receive raw binary chunk data
+    &#34;&#34;&#34;
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(10)
+        client_socket.connect((peer_host, peer_port))
+        
+        request_msg = {
+            &#39;type&#39;: &#39;REQUEST_CHUNK&#39;,
+            &#39;filename&#39;: filename,
+            &#39;chunk_index&#39;: chunk_index,
+            &#39;chunk_size&#39;: self.chunk_size,
+            &#39;requester&#39;: self.peer_id
+        }
+        
+        client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+        
+        header_data = client_socket.recv(1024)
+        if not header_data:
+            return None
+        
+        header = json.loads(header_data.decode(&#39;utf-8&#39;))
+        
+        if header.get(&#39;type&#39;) == &#39;CHUNK_DATA&#39;:
+            chunk_size = header.get(&#39;chunk_size&#39;)
+            
+            chunk_data = b&#39;&#39;
+            remaining = chunk_size
+            
+            while remaining &gt; 0:
+                data = client_socket.recv(min(remaining, 8192))
+                if not data:
+                    break
+                chunk_data += data
+                remaining -= len(data)
+            
+            client_socket.close()
+            return chunk_data
+        
+        client_socket.close()
+        return None
+        
+    except Exception as e:
+        return None</code></pre>
+</details>
+<div class="desc"><p>Request a specific chunk of a file from a peer</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the peer</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of the peer</dd>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the file</dd>
+<dt><strong><code>chunk_index</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index of the chunk to download (0-based)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bytes</code></dt>
+<dd>Chunk data or None if failed</dd>
+</dl>
+<h2 id="protocol">Protocol</h2>
+<ol>
+<li>Send REQUEST_CHUNK message with JSON header</li>
+<li>Receive CHUNK_DATA header with chunk size</li>
+<li>Receive raw binary chunk data</li>
+</ol></div>
+</dd>
+<dt id="p2p.P2P.request_file_info"><code class="name flex">
+<span>def <span class="ident">request_file_info</span></span>(<span>self, peer_host, peer_port, filename)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def request_file_info(self, peer_host, peer_port, filename):
+    &#34;&#34;&#34;
+    Request detailed metadata for a specific file from a peer
+    Prints file information to console
+
+    Args:
+        peer_host (str): IP address of the peer
+        peer_port (int): Port number of the peer
+        filename (str): Name of the file to query
+    
+    Returns:
+        dict: File metadata {&#39;path&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str} or None if not found
+    &#34;&#34;&#34;
+    try:
+        print(f&#34;[CLIENT]    Requesting info for &#39;{filename}&#39; from {peer_host}:{peer_port}&#34;)
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(5)
+        client_socket.connect((peer_host, peer_port))
+        request_msg = {
+            &#39;type&#39;: &#39;GET_FILE_INFO&#39;,
+            &#39;filename&#39;: filename,
+            &#39;requester&#39;: self.peer_id
+        }
+        client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+        response_data = client_socket.recv(8192)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            if response.get(&#39;type&#39;) == &#39;FILE_INFO&#39;:
+                file_info = response.get(&#39;info&#39;)
+                if file_info:
+                    print(f&#34;\n[FILE INFO] {filename}&#34;)
+                    size_mb = file_info[&#39;size&#39;] / (1024 * 1024)
+                    print(f&#34;  Size: {size_mb:.2f} MB ({file_info[&#39;size&#39;]} bytes)&#34;)
+                    print(f&#34;  Hash: {file_info[&#39;hash&#39;]}&#34;)
+                    print(f&#34;{&#39;=&#39;*70}\n&#34;)
+                    return file_info
+                else:
+                    print(f&#34;[INFO]      File &#39;{filename}&#39; not found on peer&#34;)
+        client_socket.close()
+    except Exception as e:
+        print(f&#34;[ERROR]     Failed to get file info: {e}&#34;)
+        return None</code></pre>
+</details>
+<div class="desc"><p>Request detailed metadata for a specific file from a peer
+Prints file information to console</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the peer</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of the peer</dd>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the file to query</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>File metadata {'path': str, 'size': int, 'hash': str} or None if not found</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.request_file_info_for_download"><code class="name flex">
+<span>def <span class="ident">request_file_info_for_download</span></span>(<span>self, peer_host, peer_port, filename)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def request_file_info_for_download(self, peer_host, peer_port, filename):
+    &#34;&#34;&#34;
+    Request file metadata from a peer before downloading
+    
+    Args:
+        peer_host (str): IP address of the peer
+        peer_port (int): Port number of the peer
+        filename (str): Name of the file to query
+    
+    Returns:
+        dict: File metadata {&#39;path&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str} or None if failed
+    &#34;&#34;&#34;
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(10)
+        client_socket.connect((peer_host, peer_port))
+
+        request_msg = {
+            &#39;type&#39;: &#39;GET_FILE_INFO&#39;,
+            &#39;filename&#39;: filename,
+            &#39;requester&#39;: self.peer_id
+        }
+
+        client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+        response_data = client_socket.recv(8192)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            if response.get(&#39;type&#39;) == &#39;FILE_INFO&#39;:
+                return response.get(&#39;info&#39;)
+        
+        client_socket.close()
+        
+    except Exception as e:
+        print(f&#34;[ERROR]      Failed to get file info: {e}&#34;)
+        return None</code></pre>
+</details>
+<div class="desc"><p>Request file metadata from a peer before downloading</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the peer</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of the peer</dd>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the file to query</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>File metadata {'path': str, 'size': int, 'hash': str} or None if failed</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.request_peer_file_list"><code class="name flex">
+<span>def <span class="ident">request_peer_file_list</span></span>(<span>self, peer_host, peer_port)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def request_peer_file_list(self, peer_host, peer_port):
+    &#34;&#34;&#34;
+    Request list of all files from a specific peer.
+    Prints formatted list of files to console.
+    
+    Args:
+        peer_host (str): IP address of the peer
+        peer_port (int): Port number of the peer
+    
+    Returns:
+        list: List of filenames available on the peer or empty list if failed
+    &#34;&#34;&#34;
+    try:
+        print(f&#34;[CLIENT]    Requesting file list from {peer_host}:{peer_port}...&#34;)
+
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(5)
+        client_socket.connect((peer_host, peer_port))
+        request_msg = {
+            &#39;type&#39;: &#39;GET_FILE_LIST&#39;,
+            &#39;requester&#39;: self.peer_id
+        }
+        client_socket.send(json.dumps(request_msg).encode(&#39;utf-8&#39;))
+
+        response_data = client_socket.recv(8192)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            if response.get(&#39;type&#39;) == &#39;FILE_LIST&#39;:
+                files = response.get(&#39;files&#39;, [])
+                peer_id = response.get(&#39;peer_id&#39;)
+                
+                print(f&#34;\n[FILE LIST] Files on {peer_id}:&#34;)
+                print(f&#34;{&#39;=&#39;*50}&#34;)
+                if not files:
+                    print(&#34;[ERROR]     No files available&#34;)
+                else:
+                    for i, filename in enumerate(files, 1):
+                        print(f&#34;  {i}. {filename}&#34;)
+                
+                return files
+        
+        client_socket.close()
+        
+    except Exception as e:
+        print(f&#34;[ERROR]     Failed to get file list from {peer_host}:{peer_port}: {e}&#34;)
+        return []</code></pre>
+</details>
+<div class="desc"><p>Request list of all files from a specific peer.
+Prints formatted list of files to console.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the peer</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of the peer</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of filenames available on the peer or empty list if failed</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.scan_shared_folder"><code class="name flex">
+<span>def <span class="ident">scan_shared_folder</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scan_shared_folder(self):
+    &#34;&#34;&#34;
+    Scan the shared folder and index all files
+    
+    Creates file_index dictionary with metadata for each file:
+    - filename (key)
+    - path: absolute path to file
+    - size: file size in bytes
+    - hash: SHA256 hash for integrity verification
+    
+    Updates self.file_index with current state of shared folder
+    Prints indexing progress to console
+    &#34;&#34;&#34;
+    print(f&#34;\n[INDEX]     Scanning shared folder: {self.shared_dir}&#34;)
+    self.file_index = {}
+    
+    if not self.shared_dir.exists():
+        print(f&#34;[WARNING]   Shared directory does not exist, creating it.&#34;)
+        self.shared_dir.mkdir(exist_ok=True)
+        return
+    
+    file_count = 0
+    for file_path in self.shared_dir.rglob(&#39;*&#39;):
+        if file_path.is_file():
+            filename = file_path.name
+            file_size = file_path.stat().st_size
+            
+            print(f&#34;[INDEX]     Hashing: {filename}&#34;, end=&#39; &#39;)
+            file_hash = self.calculate_file_hash(file_path)
+            
+            if file_hash:
+                self.file_index[filename] = {
+                    &#39;path&#39;: str(file_path),
+                    &#39;size&#39;: file_size,
+                    &#39;hash&#39;: file_hash
+                }
+                size_mb = file_size / (1024 * 1024)
+                print(f&#34;({size_mb:.2f} MB)&#34;)
+                file_count += 1
+            else:
+                print(&#34;[ERROR]     Indexing Failed&#34;)
+    print(f&#34;[INDEX]     Indexed {file_count} files\n&#34;)</code></pre>
+</details>
+<div class="desc"><p>Scan the shared folder and index all files</p>
+<p>Creates file_index dictionary with metadata for each file:
+- filename (key)
+- path: absolute path to file
+- size: file size in bytes
+- hash: SHA256 hash for integrity verification</p>
+<p>Updates self.file_index with current state of shared folder
+Prints indexing progress to console</p></div>
+</dd>
+<dt id="p2p.P2P.search_local"><code class="name flex">
+<span>def <span class="ident">search_local</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def search_local(self, query):
+    &#34;&#34;&#34;
+    Search for files in the local file index
+    
+    Args:
+        query (str): Search term (case-insensitive, partial match)
+    
+    Returns:
+        list: List of matching files with metadata:
+              [{&#39;filename&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str, 
+                &#39;peer_id&#39;: str, &#39;peer_host&#39;: str, &#39;peer_port&#39;: int}]
+    &#34;&#34;&#34;
+    query_lower = query.lower()
+    results = []
+    
+    for filename, metadata in self.file_index.items():
+        if query_lower in filename.lower():
+            results.append({
+                &#39;filename&#39;: filename,
+                &#39;size&#39;: metadata[&#39;size&#39;],
+                &#39;hash&#39;: metadata[&#39;hash&#39;],
+                &#39;peer_id&#39;: self.peer_id,
+                &#39;peer_host&#39;: self.host,
+                &#39;peer_port&#39;: self.port
+            })
+    
+    return results</code></pre>
+</details>
+<div class="desc"><p>Search for files in the local file index</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
+<dd>Search term (case-insensitive, partial match)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of matching files with metadata:
+[{'filename': str, 'size': int, 'hash': str,
+'peer_id': str, 'peer_host': str, 'peer_port': int}]</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.search_network"><code class="name flex">
+<span>def <span class="ident">search_network</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def search_network(self, query):
+    &#34;&#34;&#34;
+    Search for files across all connected peers.
+    Broadcasts search request and aggregates results.
+    Results from multiple peers are grouped by filename.
+    
+    Args:
+        query (str): Search term (case-insensitive, partial match)
+    
+    Returns:
+        list: Aggregated search results:
+              [{&#39;filename&#39;: str, &#39;size&#39;: int, &#39;hash&#39;: str,
+                &#39;peers&#39;: [{&#39;peer_id&#39;: str, &#39;host&#39;: str, &#39;port&#39;: int}]}]
+    &#34;&#34;&#34;
+    print(f&#34;[SEARCH]    Searching for: &#39;{query}&#39;&#34;)
+    print(f&#34;[SEARCH]    Querying {len(self.peers)} connected peers...&#34;)
+    
+    # Search locally first
+    local_results = self.search_local(query)
+    print(f&#34;[SEARCH]    Found {len(local_results)} local matches&#34;)
+    
+    # Generate unique search ID
+    search_id = f&#34;{self.peer_id}_{time.time()}&#34;
+    
+    # Initialize search results storage
+    with self.search_lock:
+        self.search_results[search_id] = {
+            &#39;query&#39;: query,
+            &#39;results&#39;: local_results.copy(),
+            &#39;responses_received&#39;: 0,
+            &#39;total_peers&#39;: len(self.peers)
+        }
+    
+    # Broadcast search to all peers in parallel
+    if self.peers:
+        search_threads = []
+        for peer_id, peer_info in list(self.peers.items()):
+            thread = threading.Thread(
+                target=self.send_search_request,
+                args=[peer_info[&#39;host&#39;], peer_info[&#39;port&#39;], query, search_id]
+            )
+            thread.daemon = True
+            thread.start()
+            search_threads.append(thread)
+        
+        # Wait for responses with timeout
+        start_time = time.time()
+        while time.time() - start_time &lt; self.search_timeout:
+            with self.search_lock:
+                if search_id in self.search_results:
+                    if self.search_results[search_id][&#39;responses_received&#39;] &gt;= len(self.peers):
+                        break
+            time.sleep(0.1)
+    
+    # Get aggregated results and cleanup
+    with self.search_lock:
+        if search_id in self.search_results:
+            results = self.aggregate_search_results(search_id)
+            del self.search_results[search_id]
+        else:
+            results = []
+    
+    print(f&#34;[SEARCH]    Search complete. Found {len(results)} unique files&#34;)
+    return results</code></pre>
+</details>
+<div class="desc"><p>Search for files across all connected peers.
+Broadcasts search request and aggregates results.
+Results from multiple peers are grouped by filename.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
+<dd>Search term (case-insensitive, partial match)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Aggregated search results:
+[{'filename': str, 'size': int, 'hash': str,
+'peers': [{'peer_id': str, 'host': str, 'port': int}]}]</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.send_chunk"><code class="name flex">
+<span>def <span class="ident">send_chunk</span></span>(<span>self, client_socket, filename, chunk_index, chunk_size)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_chunk(self, client_socket, filename, chunk_index, chunk_size):
+    &#34;&#34;&#34;
+    Send a specific chunk of a file to a requesting peer.
+    If file not found, sends error message instead
+    
+    Args:
+        client_socket (socket): Connected socket to send chunk through
+        filename (str): Name of the file to send chunk from
+        chunk_index (int): Index of the chunk to send (0-based)
+        chunk_size (int): Size of chunk to read in bytes
+    &#34;&#34;&#34;
+    try:
+        file_info = self.get_file_info(filename)
+        
+        if not file_info:
+            error_msg = {
+                &#39;type&#39;: &#39;ERROR&#39;,
+                &#39;message&#39;: f&#39;File not found: {filename}&#39;
+            }
+            client_socket.send(json.dumps(error_msg).encode(&#39;utf-8&#39;))
+            return
+        
+        filepath = file_info[&#39;path&#39;]
+
+        # Calculate byte offset for this chunk
+        offset = chunk_index * chunk_size
+        
+        # Read chunk from file
+        with open(filepath, &#39;rb&#39;) as f:
+            f.seek(offset)
+            chunk_data = f.read(chunk_size)
+        
+        # Send chunk header
+        header = {
+            &#39;type&#39;: &#39;CHUNK_DATA&#39;,
+            &#39;filename&#39;: filename,
+            &#39;chunk_index&#39;: chunk_index,
+            &#39;chunk_size&#39;: len(chunk_data)
+        }
+        
+        client_socket.send(json.dumps(header).encode(&#39;utf-8&#39;))
+        
+        # Small delay to ensure header is received first
+        time.sleep(0.01)
+        
+        # Send chunk data
+        client_socket.sendall(chunk_data)
+        
+    except Exception as e:
+        print(f&#34;[ERROR]      Failed to send chunk: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Send a specific chunk of a file to a requesting peer.
+If file not found, sends error message instead</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>client_socket</code></strong> :&ensp;<code>socket</code></dt>
+<dd>Connected socket to send chunk through</dd>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the file to send chunk from</dd>
+<dt><strong><code>chunk_index</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index of the chunk to send (0-based)</dd>
+<dt><strong><code>chunk_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>Size of chunk to read in bytes</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.send_heartbeat"><code class="name flex">
+<span>def <span class="ident">send_heartbeat</span></span>(<span>self, peer_host, peer_port)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_heartbeat(self, peer_host, peer_port):
+    &#34;&#34;&#34;
+    Send heartbeat message to a specific peer
+    Silently fails if connection cannot be established
+    
+    Args:
+        peer_host (str): IP address of peer
+        peer_port (int): Port number of peer
+    &#34;&#34;&#34;
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(3)
+        client_socket.connect((peer_host, peer_port))
+
+        heartbeat_msg = {
+            &#39;type&#39;: &#39;HEARTBEAT&#39;,
+            &#39;peer_id&#39;: self.peer_id,
+            &#39;timestamp&#39;: time.time()
+        }
+        client_socket.send(json.dumps(heartbeat_msg).encode(&#39;utf-8&#39;))
+
+        # Wait for acknowledgment
+        response_data = client_socket.recv(4096)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            if response.get(&#39;type&#39;) == &#39;HEARTBEAT_ACK&#39;:
+                peer_id = f&#34;{peer_host}:{peer_port}&#34;
+                if peer_id in self.peers:
+                    self.peers[peer_id][&#39;last_seen&#39;] = time.time()
+        
+        client_socket.close()
+    
+    except:
+        pass  # Silently fail on heartbeat errors</code></pre>
+</details>
+<div class="desc"><p>Send heartbeat message to a specific peer
+Silently fails if connection cannot be established</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of peer</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of peer</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.send_message"><code class="name flex">
+<span>def <span class="ident">send_message</span></span>(<span>self, peer_socket, message)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_message(self, peer_socket, message):
+    &#34;&#34;&#34;
+    Send a generic JSON message to a peer and wait for response
+    This is a utility method for simple request-response patterns
+
+    Args:
+        peer_socket (socket): Connected socket to send message through
+        message (dict): Message dictionary to send (will be JSON encoded)
+    
+    Returns:
+        dict: Response message or None if failed
+    
+    &#34;&#34;&#34;
+    try:
+        message_json = json.dumps(message)
+        peer_socket.send(message_json.encode(&#39;utf-8&#39;))
+        print(f&#34;[CLIENT]    Sent message&#34;)
+
+        response_data = peer_socket.recv(4096)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            print(f&#34;[CLIENT]    Received response: {response}&#34;)
+            return response
+
+    except Exception as e:
+        print(f&#34;[ERROR]    Failed to send message: {e}&#34;)
+        return None</code></pre>
+</details>
+<div class="desc"><p>Send a generic JSON message to a peer and wait for response
+This is a utility method for simple request-response patterns</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_socket</code></strong> :&ensp;<code>socket</code></dt>
+<dd>Connected socket to send message through</dd>
+<dt><strong><code>message</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Message dictionary to send (will be JSON encoded)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Response message or None if failed</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.send_search_request"><code class="name flex">
+<span>def <span class="ident">send_search_request</span></span>(<span>self, peer_host, peer_port, query, search_id)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_search_request(self, peer_host, peer_port, query, search_id):
+    &#34;&#34;&#34;
+    Send a search request to a specific peer
+    Updates self.search_results[search_id] with peer&#39;s results
+    Increments responses_received counter
+    This method is called in a separate thread for each peer
+    
+    Args:
+        peer_host (str): IP address of the peer
+        peer_port (int): Port number of the peer
+        query (str): Search term
+        search_id (str): Unique ID for this search operation
+    &#34;&#34;&#34;
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.settimeout(self.search_timeout)
+        client_socket.connect((peer_host, peer_port))
+        
+        search_msg = {
+            &#39;type&#39;: &#39;SEARCH_REQUEST&#39;,
+            &#39;query&#39;: query,
+            &#39;requester&#39;: self.peer_id,
+            &#39;search_id&#39;: search_id
+        }
+        
+        client_socket.send(json.dumps(search_msg).encode(&#39;utf-8&#39;))
+        
+        # Wait for response
+        response_data = client_socket.recv(8192)
+        if response_data:
+            response = json.loads(response_data.decode(&#39;utf-8&#39;))
+            if response.get(&#39;type&#39;) == &#39;SEARCH_RESPONSE&#39;:
+                results = response.get(&#39;results&#39;, [])
+                
+                # Add results to search cache
+                with self.search_lock:
+                    if search_id in self.search_results:
+                        self.search_results[search_id][&#39;results&#39;].extend(results)
+                        self.search_results[search_id][&#39;responses_received&#39;] += 1
+                
+                print(f&#34;[SEARCH]    Received {len(results)} results from {peer_host}:{peer_port}&#34;)
+        
+        client_socket.close()
+        
+    except Exception as e:
+        with self.search_lock:
+            if search_id in self.search_results:
+                self.search_results[search_id][&#39;responses_received&#39;] += 1</code></pre>
+</details>
+<div class="desc"><p>Send a search request to a specific peer
+Updates self.search_results[search_id] with peer's results
+Increments responses_received counter
+This method is called in a separate thread for each peer</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>peer_host</code></strong> :&ensp;<code>str</code></dt>
+<dd>IP address of the peer</dd>
+<dt><strong><code>peer_port</code></strong> :&ensp;<code>int</code></dt>
+<dd>Port number of the peer</dd>
+<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
+<dd>Search term</dd>
+<dt><strong><code>search_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique ID for this search operation</dd>
+</dl></div>
+</dd>
+<dt id="p2p.P2P.start_server"><code class="name flex">
+<span>def <span class="ident">start_server</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start_server(self):
+    &#34;&#34;&#34;
+    Start the P2P server
+    
+    Initializes the server socket, binds to host:port, and starts three
+    background threads:
+    - accept_connections: Accepts incoming peer connections
+    - loop_heartbeat: Sends periodic heartbeat to all peers
+    - cleanup_dead_peers: Removes unresponsive peers
+    
+    Also scans the shared folder to index available files.
+    &#34;&#34;&#34;
+    try:
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.server_socket.bind((self.host, self.port))
+        self.server_socket.listen(5)
+        self.running = True
+
+        print(f&#34;[SERVER]    Started on {self.host}:{self.port}&#34;)
+        print(f&#34;[SERVER]    Waiting for connections&#34;)
+        print(f&#34;[SERVER]    Shared directory: {self.shared_dir.absolute()}&#34;)
+        print(f&#34;[SERVER]    Downloads directory: {self.downloads_dir.absolute()}&#34;)
+
+
+        self.scan_shared_folder()
+
+        # Start background threads
+        accept_thread = threading.Thread(target=self.accept_connections)
+        accept_thread.daemon = True
+        accept_thread.start()
+
+        heartbeat_thread = threading.Thread(target=self.loop_heartbeat)
+        heartbeat_thread.daemon = True
+        heartbeat_thread.start()
+
+        cleanup_thread = threading.Thread(target=self.cleanup_dead_peers)
+        cleanup_thread.daemon = True
+        cleanup_thread.start()
+    except Exception as e:
+        print(f&#34;[ERROR]     Failed to start server: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Start the P2P server</p>
+<p>Initializes the server socket, binds to host:port, and starts three
+background threads:
+- accept_connections: Accepts incoming peer connections
+- loop_heartbeat: Sends periodic heartbeat to all peers
+- cleanup_dead_peers: Removes unresponsive peers</p>
+<p>Also scans the shared folder to index available files.</p></div>
+</dd>
+<dt id="p2p.P2P.stop_server"><code class="name flex">
+<span>def <span class="ident">stop_server</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_server(self):
+    &#34;&#34;&#34;
+    Stop the server and close all connections
+    &#34;&#34;&#34;
+    print(&#34;[SERVER]    Shutting down\n&#34;)
+    self.running = False
+    if self.server_socket:
+        self.server_socket.close()</code></pre>
+</details>
+<div class="desc"><p>Stop the server and close all connections</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="p2p.P2P" href="#p2p.P2P">P2P</a></code></h4>
+<ul class="">
+<li><code><a title="p2p.P2P.accept_connections" href="#p2p.P2P.accept_connections">accept_connections</a></code></li>
+<li><code><a title="p2p.P2P.add_peer" href="#p2p.P2P.add_peer">add_peer</a></code></li>
+<li><code><a title="p2p.P2P.aggregate_search_results" href="#p2p.P2P.aggregate_search_results">aggregate_search_results</a></code></li>
+<li><code><a title="p2p.P2P.announce_to_peers" href="#p2p.P2P.announce_to_peers">announce_to_peers</a></code></li>
+<li><code><a title="p2p.P2P.calculate_file_hash" href="#p2p.P2P.calculate_file_hash">calculate_file_hash</a></code></li>
+<li><code><a title="p2p.P2P.cleanup_dead_peers" href="#p2p.P2P.cleanup_dead_peers">cleanup_dead_peers</a></code></li>
+<li><code><a title="p2p.P2P.connect_to_peer" href="#p2p.P2P.connect_to_peer">connect_to_peer</a></code></li>
+<li><code><a title="p2p.P2P.display_search_results" href="#p2p.P2P.display_search_results">display_search_results</a></code></li>
+<li><code><a title="p2p.P2P.download_file" href="#p2p.P2P.download_file">download_file</a></code></li>
+<li><code><a title="p2p.P2P.get_file_info" href="#p2p.P2P.get_file_info">get_file_info</a></code></li>
+<li><code><a title="p2p.P2P.get_file_list" href="#p2p.P2P.get_file_list">get_file_list</a></code></li>
+<li><code><a title="p2p.P2P.handle_client" href="#p2p.P2P.handle_client">handle_client</a></code></li>
+<li><code><a title="p2p.P2P.list_files" href="#p2p.P2P.list_files">list_files</a></code></li>
+<li><code><a title="p2p.P2P.list_peers" href="#p2p.P2P.list_peers">list_peers</a></code></li>
+<li><code><a title="p2p.P2P.loop_heartbeat" href="#p2p.P2P.loop_heartbeat">loop_heartbeat</a></code></li>
+<li><code><a title="p2p.P2P.process_message" href="#p2p.P2P.process_message">process_message</a></code></li>
+<li><code><a title="p2p.P2P.refresh_index" href="#p2p.P2P.refresh_index">refresh_index</a></code></li>
+<li><code><a title="p2p.P2P.request_chunk" href="#p2p.P2P.request_chunk">request_chunk</a></code></li>
+<li><code><a title="p2p.P2P.request_file_info" href="#p2p.P2P.request_file_info">request_file_info</a></code></li>
+<li><code><a title="p2p.P2P.request_file_info_for_download" href="#p2p.P2P.request_file_info_for_download">request_file_info_for_download</a></code></li>
+<li><code><a title="p2p.P2P.request_peer_file_list" href="#p2p.P2P.request_peer_file_list">request_peer_file_list</a></code></li>
+<li><code><a title="p2p.P2P.scan_shared_folder" href="#p2p.P2P.scan_shared_folder">scan_shared_folder</a></code></li>
+<li><code><a title="p2p.P2P.search_local" href="#p2p.P2P.search_local">search_local</a></code></li>
+<li><code><a title="p2p.P2P.search_network" href="#p2p.P2P.search_network">search_network</a></code></li>
+<li><code><a title="p2p.P2P.send_chunk" href="#p2p.P2P.send_chunk">send_chunk</a></code></li>
+<li><code><a title="p2p.P2P.send_heartbeat" href="#p2p.P2P.send_heartbeat">send_heartbeat</a></code></li>
+<li><code><a title="p2p.P2P.send_message" href="#p2p.P2P.send_message">send_message</a></code></li>
+<li><code><a title="p2p.P2P.send_search_request" href="#p2p.P2P.send_search_request">send_search_request</a></code></li>
+<li><code><a title="p2p.P2P.start_server" href="#p2p.P2P.start_server">start_server</a></code></li>
+<li><code><a title="p2p.P2P.stop_server" href="#p2p.P2P.stop_server">stop_server</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

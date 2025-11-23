@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>p2p_interface API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>p2p_interface</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="p2p_interface.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    print(&#34;P2P FILE SHARING SYSTEM&#34;)
+    print(&#34;=&#34;*50)
+    port_str = input(&#34;Enter port number (default: 5000): &#34;).strip() or &#34;5000&#34;
+    
+    try:
+        port = int(port_str)
+    except ValueError:
+        print(&#34;Invalid port, using 5000&#34;)
+        port = 5000
+    
+    # Create and start node
+    node = P2P(&#39;127.0.0.1&#39;, port)
+    node.start_server()
+    time.sleep(1)
+
+    ui = UserInterface(node)
+    ui.run()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="p2p_interface.UserInterface"><code class="flex name class">
+<span>class <span class="ident">UserInterface</span></span>
+<span>(</span><span>node)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UserInterface():
+    &#34;&#34;&#34;
+    Command-Line User Interface for P2P File Sharing System
+    
+    Provides an interactive menu-driven interface for users to interact with
+    the P2P node. Handles user input, displays results, and manages the
+    interaction flow between the user and the P2P network.
+    
+    Attributes:
+        node (P2P): Reference to the P2P node instance
+        last_search_results (list): Cache of most recent search results for downloads
+    &#34;&#34;&#34;
+    def __init__(self, node):
+        &#34;&#34;&#34;
+        Initialize the User Interface
+        
+        Args:
+            node (P2P): P2P node instance to interface with
+        &#34;&#34;&#34;
+        self.node = node
+        self.last_search_results = []
+
+    def show_menu(self):
+        &#34;&#34;&#34;Display the main menu options to the user&#34;&#34;&#34;
+        print(&#34;Options:&#34;)
+        print(&#34;  1. List connected peers&#34;)
+        print(&#34;  2. List my shared files&#34;)
+        print(&#34;  3. Search for files&#34;)
+        print(&#34;  4. Download file&#34;)
+        print(&#34;  5. Refresh file index&#34;)
+        print(&#34;  6. Connect to peer&#34;)
+        print(&#34;  7. Exit&#34;)
+
+    def run(self):
+        &#34;&#34;&#34;
+        Main UI loop - runs until user exits or interrupts
+        
+        Continuously displays menu, processes user input, and executes
+        corresponding actions. Handles both normal exit (option 7) and
+        keyboard interrupt (Ctrl+C).
+        
+        - Runs while self.node.running is True
+        - Exits on option 7 or KeyboardInterrupt
+        - Gracefully shuts down node on exit
+        
+        Exception Handling:
+            - KeyboardInterrupt: Catches Ctrl+C and shuts down gracefully
+            - Invalid input: Displays error message and continues
+        &#34;&#34;&#34;
+        while self.node.running:
+            try:
+                self.show_menu()
+                choice = input(&#34;Enter choice (1-7): &#34;).strip()
+
+                if choice == &#39;1&#39;:
+                    self.node.list_peers()
+                    
+                elif choice == &#39;2&#39;:
+                    self.node.list_files()
+                    
+                elif choice == &#39;3&#39;:
+                    self.search_files()
+                    
+                elif choice == &#39;4&#39;:
+                    self.download_file()
+                    
+                elif choice == &#39;5&#39;:
+                    print(&#34;\nRefreshing file index&#34;)
+                    self.node.scan_shared_folder()
+                    
+                elif choice == &#39;6&#39;:
+                    self.connect_to_peer()
+                    
+                elif choice == &#39;7&#39;:
+                    print(&#34;\nShutting down&#34;)
+                    self.node.stop_server()
+                    break
+                    
+                else:
+                    print(&#34;\nInvalid choice. Please enter 1-7.&#34;)
+                    
+            except KeyboardInterrupt:
+                print(&#34;Shutting down&#34;)
+                self.node.stop_server()
+                break
+
+    def search_files(self):
+        &#34;&#34;&#34;
+        Handle file search interaction
+        
+        Prompts user for search query, performs network-wide search,
+        caches results for later download, and displays formatted results.
+
+        Updates self.last_search_results for use in download_file()
+        Prints search results to console
+        &#34;&#34;&#34;
+        query = input(&#34;\nEnter search query: &#34;).strip()
+        
+        if not query:
+            print(&#34;Please enter a search term&#34;)
+            return
+        
+        print(f&#34;\nSearching for &#39;{query}&#39;&#34;)
+        results = self.node.search_network(query)
+        self.last_search_results = results
+        
+        
+        if not results:
+            print(&#34;No files found matching your query.&#34;)
+        else:
+            print(f&#34;{len(results)} files found&#34;)
+            for i, result in enumerate(results, 1):
+                filename = result[&#39;filename&#39;]
+                size_mb = result[&#39;size&#39;] / (1024 * 1024)
+                peers = result[&#39;peers&#39;]
+                
+                print(f&#34;\n{i}. {filename}&#34;)
+                print(f&#34;   Size: {size_mb:.2f} MB&#34;)
+                print(f&#34;   Available on {len(peers)} peer(s):&#34;)
+                
+                for peer in peers:
+                    print(f&#34;      - {peer[&#39;peer_id&#39;]}&#34;)
+
+    def download_file(self):
+        &#34;&#34;&#34;
+        Handle file download interaction from cached search results
+        
+        Guides user through downloading a file from previous search results:
+        1. Select file from search results
+        2. Select peer to download from
+        3. Execute download
+        4. Display success/failure message
+
+        Requirements:
+            - Must run search_files() first to populate self.last_search_results
+            - Selected file must have at least one available peer
+        &#34;&#34;&#34;
+        if not self.last_search_results:
+            print(&#34;\nNot in search results. Please search for files first (option 3).&#34;)
+            return
+        
+        print(f&#34;\nYou have {len(self.last_search_results)} files from last search.&#34;)
+        file_num = input(&#34;Enter file number to download: &#34;).strip()
+        
+        try:
+            file_num = int(file_num)
+            if file_num &lt; 1 or file_num &gt; len(self.last_search_results):
+                print(&#34;Invalid file number&#34;)
+                return
+            
+            result = self.last_search_results[file_num - 1]
+            filename = result[&#39;filename&#39;]
+            peers = result[&#39;peers&#39;]
+            
+            if not peers:
+                print(&#34;No peers available for this file&#34;)
+                return
+            
+            print(f&#34;\nFile is available on {len(peers)} peer(s):&#34;)
+            for i, peer in enumerate(peers, 1):
+                print(f&#34;{i}. {peer[&#39;peer_id&#39;]}&#34;)
+            
+            peer_num = input(&#34;Select peer (1-{}): &#34;.format(len(peers))).strip()
+            
+            try:
+                peer_num = int(peer_num)
+                if peer_num &lt; 1 or peer_num &gt; len(peers):
+                    print(&#34;Invalid peer number&#34;)
+                    return
+                
+                peer = peers[peer_num - 1]
+                success = self.node.download_file(peer[&#39;host&#39;], peer[&#39;port&#39;], filename)
+                
+                if success:
+                    print(f&#34;\nSuccessfully downloaded: {filename}&#34;)
+                else:
+                    print(f&#34;\nFailed to download: {filename}&#34;)
+                    
+            except ValueError:
+                print(&#34;Please enter a valid number&#34;)
+                
+        except ValueError:
+            print(&#34;Please enter a valid number&#34;)
+
+    def connect_to_peer(self):
+        &#34;&#34;&#34;
+        Handle manual peer connection interaction
+        Prompts user for peer IP address and port, then attempts to connect.
+        Provides default value for IP address and validates port number.
+
+        On success: Peer is added to node&#39;s peer list
+        Triggers peer discovery (node learns about peer&#39;s known peers)
+        &#34;&#34;&#34;
+        print(&#34;\nConnect to peer:&#34;)
+        host = input(&#34;Enter peer IP address (default: 127.0.0.1): &#34;).strip() or &#34;127.0.0.1&#34;
+        port_str = input(&#34;Enter peer port: &#34;).strip()
+        
+        try:
+            port = int(port_str)
+            print(f&#34;\nConnecting to {host}:{port}&#34;)
+            success = self.node.connect_to_peer(host, port)
+            
+            if success:
+                print(f&#34;Successfully connected to {host}:{port}&#34;)
+            else:
+                print(f&#34;Failed to connect to {host}:{port}&#34;)
+                
+        except ValueError:
+            print(&#34;Invalid port number&#34;)</code></pre>
+</details>
+<div class="desc"><p>Command-Line User Interface for P2P File Sharing System</p>
+<p>Provides an interactive menu-driven interface for users to interact with
+the P2P node. Handles user input, displays results, and manages the
+interaction flow between the user and the P2P network.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>node</code></strong> :&ensp;<code>P2P</code></dt>
+<dd>Reference to the P2P node instance</dd>
+<dt><strong><code>last_search_results</code></strong> :&ensp;<code>list</code></dt>
+<dd>Cache of most recent search results for downloads</dd>
+</dl>
+<p>Initialize the User Interface</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>node</code></strong> :&ensp;<code>P2P</code></dt>
+<dd>P2P node instance to interface with</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="p2p_interface.UserInterface.connect_to_peer"><code class="name flex">
+<span>def <span class="ident">connect_to_peer</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect_to_peer(self):
+    &#34;&#34;&#34;
+    Handle manual peer connection interaction
+    Prompts user for peer IP address and port, then attempts to connect.
+    Provides default value for IP address and validates port number.
+
+    On success: Peer is added to node&#39;s peer list
+    Triggers peer discovery (node learns about peer&#39;s known peers)
+    &#34;&#34;&#34;
+    print(&#34;\nConnect to peer:&#34;)
+    host = input(&#34;Enter peer IP address (default: 127.0.0.1): &#34;).strip() or &#34;127.0.0.1&#34;
+    port_str = input(&#34;Enter peer port: &#34;).strip()
+    
+    try:
+        port = int(port_str)
+        print(f&#34;\nConnecting to {host}:{port}&#34;)
+        success = self.node.connect_to_peer(host, port)
+        
+        if success:
+            print(f&#34;Successfully connected to {host}:{port}&#34;)
+        else:
+            print(f&#34;Failed to connect to {host}:{port}&#34;)
+            
+    except ValueError:
+        print(&#34;Invalid port number&#34;)</code></pre>
+</details>
+<div class="desc"><p>Handle manual peer connection interaction
+Prompts user for peer IP address and port, then attempts to connect.
+Provides default value for IP address and validates port number.</p>
+<p>On success: Peer is added to node's peer list
+Triggers peer discovery (node learns about peer's known peers)</p></div>
+</dd>
+<dt id="p2p_interface.UserInterface.download_file"><code class="name flex">
+<span>def <span class="ident">download_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def download_file(self):
+    &#34;&#34;&#34;
+    Handle file download interaction from cached search results
+    
+    Guides user through downloading a file from previous search results:
+    1. Select file from search results
+    2. Select peer to download from
+    3. Execute download
+    4. Display success/failure message
+
+    Requirements:
+        - Must run search_files() first to populate self.last_search_results
+        - Selected file must have at least one available peer
+    &#34;&#34;&#34;
+    if not self.last_search_results:
+        print(&#34;\nNot in search results. Please search for files first (option 3).&#34;)
+        return
+    
+    print(f&#34;\nYou have {len(self.last_search_results)} files from last search.&#34;)
+    file_num = input(&#34;Enter file number to download: &#34;).strip()
+    
+    try:
+        file_num = int(file_num)
+        if file_num &lt; 1 or file_num &gt; len(self.last_search_results):
+            print(&#34;Invalid file number&#34;)
+            return
+        
+        result = self.last_search_results[file_num - 1]
+        filename = result[&#39;filename&#39;]
+        peers = result[&#39;peers&#39;]
+        
+        if not peers:
+            print(&#34;No peers available for this file&#34;)
+            return
+        
+        print(f&#34;\nFile is available on {len(peers)} peer(s):&#34;)
+        for i, peer in enumerate(peers, 1):
+            print(f&#34;{i}. {peer[&#39;peer_id&#39;]}&#34;)
+        
+        peer_num = input(&#34;Select peer (1-{}): &#34;.format(len(peers))).strip()
+        
+        try:
+            peer_num = int(peer_num)
+            if peer_num &lt; 1 or peer_num &gt; len(peers):
+                print(&#34;Invalid peer number&#34;)
+                return
+            
+            peer = peers[peer_num - 1]
+            success = self.node.download_file(peer[&#39;host&#39;], peer[&#39;port&#39;], filename)
+            
+            if success:
+                print(f&#34;\nSuccessfully downloaded: {filename}&#34;)
+            else:
+                print(f&#34;\nFailed to download: {filename}&#34;)
+                
+        except ValueError:
+            print(&#34;Please enter a valid number&#34;)
+            
+    except ValueError:
+        print(&#34;Please enter a valid number&#34;)</code></pre>
+</details>
+<div class="desc"><p>Handle file download interaction from cached search results</p>
+<p>Guides user through downloading a file from previous search results:
+1. Select file from search results
+2. Select peer to download from
+3. Execute download
+4. Display success/failure message</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Must run search_files() first to populate self.last_search_results</li>
+<li>Selected file must have at least one available peer</li>
+</ul></div>
+</dd>
+<dt id="p2p_interface.UserInterface.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+    &#34;&#34;&#34;
+    Main UI loop - runs until user exits or interrupts
+    
+    Continuously displays menu, processes user input, and executes
+    corresponding actions. Handles both normal exit (option 7) and
+    keyboard interrupt (Ctrl+C).
+    
+    - Runs while self.node.running is True
+    - Exits on option 7 or KeyboardInterrupt
+    - Gracefully shuts down node on exit
+    
+    Exception Handling:
+        - KeyboardInterrupt: Catches Ctrl+C and shuts down gracefully
+        - Invalid input: Displays error message and continues
+    &#34;&#34;&#34;
+    while self.node.running:
+        try:
+            self.show_menu()
+            choice = input(&#34;Enter choice (1-7): &#34;).strip()
+
+            if choice == &#39;1&#39;:
+                self.node.list_peers()
+                
+            elif choice == &#39;2&#39;:
+                self.node.list_files()
+                
+            elif choice == &#39;3&#39;:
+                self.search_files()
+                
+            elif choice == &#39;4&#39;:
+                self.download_file()
+                
+            elif choice == &#39;5&#39;:
+                print(&#34;\nRefreshing file index&#34;)
+                self.node.scan_shared_folder()
+                
+            elif choice == &#39;6&#39;:
+                self.connect_to_peer()
+                
+            elif choice == &#39;7&#39;:
+                print(&#34;\nShutting down&#34;)
+                self.node.stop_server()
+                break
+                
+            else:
+                print(&#34;\nInvalid choice. Please enter 1-7.&#34;)
+                
+        except KeyboardInterrupt:
+            print(&#34;Shutting down&#34;)
+            self.node.stop_server()
+            break</code></pre>
+</details>
+<div class="desc"><p>Main UI loop - runs until user exits or interrupts</p>
+<p>Continuously displays menu, processes user input, and executes
+corresponding actions. Handles both normal exit (option 7) and
+keyboard interrupt (Ctrl+C).</p>
+<ul>
+<li>Runs while self.node.running is True</li>
+<li>Exits on option 7 or KeyboardInterrupt</li>
+<li>Gracefully shuts down node on exit</li>
+</ul>
+<p>Exception Handling:
+- KeyboardInterrupt: Catches Ctrl+C and shuts down gracefully
+- Invalid input: Displays error message and continues</p></div>
+</dd>
+<dt id="p2p_interface.UserInterface.search_files"><code class="name flex">
+<span>def <span class="ident">search_files</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def search_files(self):
+    &#34;&#34;&#34;
+    Handle file search interaction
+    
+    Prompts user for search query, performs network-wide search,
+    caches results for later download, and displays formatted results.
+
+    Updates self.last_search_results for use in download_file()
+    Prints search results to console
+    &#34;&#34;&#34;
+    query = input(&#34;\nEnter search query: &#34;).strip()
+    
+    if not query:
+        print(&#34;Please enter a search term&#34;)
+        return
+    
+    print(f&#34;\nSearching for &#39;{query}&#39;&#34;)
+    results = self.node.search_network(query)
+    self.last_search_results = results
+    
+    
+    if not results:
+        print(&#34;No files found matching your query.&#34;)
+    else:
+        print(f&#34;{len(results)} files found&#34;)
+        for i, result in enumerate(results, 1):
+            filename = result[&#39;filename&#39;]
+            size_mb = result[&#39;size&#39;] / (1024 * 1024)
+            peers = result[&#39;peers&#39;]
+            
+            print(f&#34;\n{i}. {filename}&#34;)
+            print(f&#34;   Size: {size_mb:.2f} MB&#34;)
+            print(f&#34;   Available on {len(peers)} peer(s):&#34;)
+            
+            for peer in peers:
+                print(f&#34;      - {peer[&#39;peer_id&#39;]}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Handle file search interaction</p>
+<p>Prompts user for search query, performs network-wide search,
+caches results for later download, and displays formatted results.</p>
+<p>Updates self.last_search_results for use in download_file()
+Prints search results to console</p></div>
+</dd>
+<dt id="p2p_interface.UserInterface.show_menu"><code class="name flex">
+<span>def <span class="ident">show_menu</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_menu(self):
+    &#34;&#34;&#34;Display the main menu options to the user&#34;&#34;&#34;
+    print(&#34;Options:&#34;)
+    print(&#34;  1. List connected peers&#34;)
+    print(&#34;  2. List my shared files&#34;)
+    print(&#34;  3. Search for files&#34;)
+    print(&#34;  4. Download file&#34;)
+    print(&#34;  5. Refresh file index&#34;)
+    print(&#34;  6. Connect to peer&#34;)
+    print(&#34;  7. Exit&#34;)</code></pre>
+</details>
+<div class="desc"><p>Display the main menu options to the user</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="p2p_interface.main" href="#p2p_interface.main">main</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="p2p_interface.UserInterface" href="#p2p_interface.UserInterface">UserInterface</a></code></h4>
+<ul class="">
+<li><code><a title="p2p_interface.UserInterface.connect_to_peer" href="#p2p_interface.UserInterface.connect_to_peer">connect_to_peer</a></code></li>
+<li><code><a title="p2p_interface.UserInterface.download_file" href="#p2p_interface.UserInterface.download_file">download_file</a></code></li>
+<li><code><a title="p2p_interface.UserInterface.run" href="#p2p_interface.UserInterface.run">run</a></code></li>
+<li><code><a title="p2p_interface.UserInterface.search_files" href="#p2p_interface.UserInterface.search_files">search_files</a></code></li>
+<li><code><a title="p2p_interface.UserInterface.show_menu" href="#p2p_interface.UserInterface.show_menu">show_menu</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

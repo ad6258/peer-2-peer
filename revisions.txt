@@ -1,0 +1,23 @@
+commit eb555df2087d975363d56ab17fae13cc6abb8b4a
+Author: ad6258 <atharvadhupkar@mail.rit.edu>
+Date:   Thu Nov 20 20:57:28 2025 -0500
+
+    file indexing added
+
+commit a7b0f735da14b2f7f3b166f68d3bf400efd398ba
+Author: ad6258 <atharvadhupkar@mail.rit.edu>
+Date:   Sat Nov 15 17:48:20 2025 -0500
+
+    discovery added
+
+commit dd0aaf8f8c0ef003c5a802852d13b671379ad1ab
+Author: ad6258 <atharvadhupkar@mail.rit.edu>
+Date:   Sat Nov 15 16:22:27 2025 -0500
+
+    created p2p node
+
+commit 85637be88c9df5c1c307d550e8df2ae381301269
+Author: ad6258 <atharvadhupkar@mail.rit.edu>
+Date:   Sat Nov 15 15:42:21 2025 -0500
+
+    init commit
